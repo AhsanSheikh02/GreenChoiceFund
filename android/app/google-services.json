@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "514689965202",
+    "project_id": "green-choice-fund",
+    "storage_bucket": "green-choice-fund.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:514689965202:android:bc13345f75cde7aa621a4b",
+        "android_client_info": {
+          "package_name": "com.greenchoicefund"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "514689965202-dg56p0dtpomv4u1eihkit2ksr6ce57c9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.greenchoicefund",
+            "certificate_hash": "9effaade7d9bdca0ac4fd6c4b9aa4a6aa6343e86"
+          }
+        },
+        {
+          "client_id": "514689965202-mr498dfiovnvicdohvn5771pjecjlo91.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsqztMDgD-yf1AKNoVi7fvIoLkrPO9rOo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "514689965202-mr498dfiovnvicdohvn5771pjecjlo91.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
