@@ -16,6 +16,7 @@ import SimpleToast from 'react-native-simple-toast'
 import colors from '../Assets/Colors/Index'
 import Fonts from '../Assets/Fonts/Index'
 import ImageLoader from './ImageLoader'
+import Images from '../Assets/Images/Index'
 
 
 
@@ -38,32 +39,42 @@ const CategoryItem = (props) => {
                 borderRadius: 15,
                 backgroundColor: colors.Placeholder
             }}>
-                <ImageLoader
-                    isLoading={isLoading}
-                />
-                <Image
-                    // loadingIndicatorSource={() => {
-                    //     return (
-                    //         <ActivityIndicator
-                    //             size='small'
-                    //             color={colors.Secondary}
-                    //             style={{display: (isLoading) ? 'flex' : 'none'}}
-                    //             // animating={isLoading}
-                    //         />
-                    //     )
-                    // }}
-                    onLoadStart={() => {
-                        setIsLoading(true)
-                    }}
-                    // onLoad={() => {
-                    //     setIsLoading(false)
-                    // }}
-                    onError={(error) => console.log(error)}
-                    onLoadEnd={() => {
-                        setIsLoading(false)
 
-                    }}
-                    source={{ uri: Item?.category_media[0]?.image }} style={styles.categoryImg} />
+                {
+                    !Item?.category_media[0]?.image ?
+                        <>
+                            <ImageLoader
+                                isLoading={isLoading}
+                            />
+                            <Image
+                                // loadingIndicatorSource={() => {
+                                //     return (
+                                //         <ActivityIndicator
+                                //             size='small'
+                                //             color={colors.Secondary}
+                                //             style={{display: (isLoading) ? 'flex' : 'none'}}
+                                //             // animating={isLoading}
+                                //         />
+                                //     )
+                                // }}
+                                onLoadStart={() => {
+                                    setIsLoading(true)
+                                }}
+                                // onLoad={() => {
+                                //     setIsLoading(false)
+                                // }}
+                                onError={(error) => console.log(error)}
+                                onLoadEnd={() => {
+                                    setIsLoading(false)
+
+                                }}
+                                source={{ uri: Item?.category_media[0]?.image }} style={styles.categoryImg} />
+
+                        </>
+                        :
+                        <Image source={Images.Fallback} style={styles.categoryImg} resizeMode='contain' />
+                }
+
             </View>
 
             <View style={{ height: '25%', paddingHorizontal: 22, justifyContent: 'center' }}>
@@ -94,5 +105,8 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         color: colors.White
     },
-
+    fallbackImg: {
+        height: 30,
+        width: 30,
+    },
 })

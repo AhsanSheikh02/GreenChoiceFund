@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { View, Pressable, Text, Image, StyleSheet } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack'
+import { createStackNavigator,CardStyleInterpolators } from '@react-navigation/stack'
 import { useSelector } from 'react-redux';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -36,12 +36,10 @@ const HomeStackScreens = () => {
     return (
         <HomeScreenStack.Navigator
             screenOptions={{
-                // gestureEnabled: true,
-                // gestureDirection: 'horizontal',
+                gestureEnabled: true,
+                gestureDirection: 'horizontal',
+                cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
                 headerShown: false,
-                // transitionSpec: {
-                //     open: config
-                // }
             }} >
             <HomeScreenStack.Screen
                 options={{
@@ -128,7 +126,7 @@ const TabStack = ({ navigation }) => {
                         </Pressable>
 
                         <Pressable
-                            style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}
+                            style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
                             onPress={() => {
                                 navigation.navigate("Cart")
                             }}>

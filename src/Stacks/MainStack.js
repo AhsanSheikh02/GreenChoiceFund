@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { createStackNavigator } from '@react-navigation/stack'
+import { createStackNavigator, CardStyleInterpolators, TransitionSpecs } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'react-native'
 
@@ -26,33 +26,56 @@ const config = {
     animation: 'spring',
     config: {
         stiffness: 1000,
-        damping: 50,
+        damping: 500,
         mass: 3,
-        overshootClamping: false,
+        overshootClamping: true,
         restDisplacementThreshold: 0.01,
         restSpeedThreshold: 0.01,
     },
 };
 
+const navigationAnimation = ({ current }) => ({
+    cardStyle: {
+        backgroundColor: colors.Primary,
+        opacity: current.progress,
+    },
+});
 const MainStack = () => {
 
     return (
         <NavigationContainer>
             <StatusBar barStyle='dar-content' translucent backgroundColor={colors.SecondaryTwo} />
             <Stack.Navigator
+
                 screenOptions={{
                     gestureEnabled: true,
                     gestureDirection: 'horizontal',
+                    cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
                     headerShown: false,
                     // transitionSpec: {
                     //     open: config
                     // }
                 }} initialRouteName='Splash'>
 
-                <Stack.Screen name="Splash" component={Splash} />
-                <Stack.Screen name="SignIn" component={SignIn} />
-                <Stack.Screen name="SignUp" component={SignUp} />
-                <Stack.Screen name="PersonalDetails" component={PersonalDetails} />
+                <Stack.Screen
+                    // options={{ cardStyleInterpolator: navigationAnimation }}
+                    name="Splash" component={Splash} />
+                <Stack.Screen
+                    // options={{ cardStyleInterpolator: navigationAnimation }}
+                    name="SignIn" component={SignIn} />
+                <Stack.Screen
+                    // options={{ cardStyleInterpolator: navigationAnimation }}
+                    name="SignUp" component={SignUp} />
+                <Stack.Screen
+                    // options={{
+
+                    //     transitionSpec: {
+                    //         open: TransitionSpecs.TransitionIOSSpec,
+                    //         close: TransitionSpecs.TransitionIOSSpec,
+                    //     },
+                    // }}
+                    // options={{ cardStyleInterpolator: navigationAnimation }}
+                    name="PersonalDetails" component={PersonalDetails} />
                 <Stack.Screen name="OnBoarding" component={OnBoarding} />
                 <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
                 <Stack.Screen name="Inquiry" component={Inquiry} />
