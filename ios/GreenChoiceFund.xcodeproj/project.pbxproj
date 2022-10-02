@@ -13,8 +13,9 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		1977300E17EB8774B92E63BC /* Pods_GreenChoiceFund.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D92CD250E27A6EF06D14D2C8 /* Pods_GreenChoiceFund.framework */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		B2C6F10328BFFFEE00721BF4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B2C6F10228BFFFEE00721BF4 /* GoogleService-Info.plist */; };
 		B73073BD397FA10E560EF96A /* Pods_GreenChoiceFund_GreenChoiceFundTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02246174AE8C12A840B0FDC4 /* Pods_GreenChoiceFund_GreenChoiceFundTests.framework */; };
+		E63CF15028E9AADA003FB870 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E63CF14F28E9AADA003FB870 /* GoogleService-Info.plist */; };
+		E63CF15128E9AADA003FB870 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E63CF14F28E9AADA003FB870 /* GoogleService-Info.plist */; };
 		E994A382966F497793E579A3 /* SFProDisplay-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 19E01B25014D4F0DA7DB9A25 /* SFProDisplay-Regular.ttf */; };
 /* End PBXBuildFile section */
 
@@ -46,8 +47,8 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = GreenChoiceFund/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-GreenChoiceFund-GreenChoiceFundTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GreenChoiceFund-GreenChoiceFundTests.release.xcconfig"; path = "Target Support Files/Pods-GreenChoiceFund-GreenChoiceFundTests/Pods-GreenChoiceFund-GreenChoiceFundTests.release.xcconfig"; sourceTree = "<group>"; };
 		B299619928B95D4D0037F372 /* GreenChoiceFund.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = GreenChoiceFund.entitlements; path = GreenChoiceFund/GreenChoiceFund.entitlements; sourceTree = "<group>"; };
-		B2C6F10228BFFFEE00721BF4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D92CD250E27A6EF06D14D2C8 /* Pods_GreenChoiceFund.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GreenChoiceFund.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E63CF14F28E9AADA003FB870 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -122,7 +123,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				B2C6F10228BFFFEE00721BF4 /* GoogleService-Info.plist */,
+				E63CF14F28E9AADA003FB870 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* GreenChoiceFund */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* GreenChoiceFundTests */,
@@ -250,6 +251,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E63CF15128E9AADA003FB870 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,7 +260,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
-				B2C6F10328BFFFEE00721BF4 /* GoogleService-Info.plist in Resources */,
+				E63CF15028E9AADA003FB870 /* GoogleService-Info.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				E994A382966F497793E579A3 /* SFProDisplay-Regular.ttf in Resources */,
 			);

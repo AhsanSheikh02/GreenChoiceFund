@@ -1,0 +1,25 @@
+[
+    {
+        "providerId": "apple.com",
+        "secret": "-JLordNjO53ROUZfcXuQHYhl9ud4937Y",
+        "token": "eyJraWQiOiJXNldjT0tCIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwczovL2FwcGxlaWQuYXBwbGUuY29tIiwiYXVkIjoiY29tLmdyZWVuY2hvaWNlZnVuZCIsImV4cCI6MTY2NDc5NzMxMSwiaWF0IjoxNjY0NzEwOTExLCJzdWIiOiIwMDA4MTQuNDQ5YmUzZDUzZmZiNDFjMjg3MWZhYTMzOWNiZWRmNDUuMTgxNiIsIm5vbmNlIjoiMDk5MGZkOWFhZWE0MTdiZDc5Yjk5NmU5ZDRiODRmNTgxN2ZkMmRhOWE0NjBmMjRmMjU4MDljZTE0YTY0ZTVmZCIsImNfaGFzaCI6InpqOW51SUYzaVdhaEI4azZQTVVmanciLCJlbWFpbCI6IlplZXNoYW4udm9pZEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6InRydWUiLCJhdXRoX3RpbWUiOjE2NjQ3MTA5MTEsIm5vbmNlX3N1cHBvcnRlZCI6dHJ1ZX0.svCgcVp_aMpKqF-TrzHYZd8MtHKuLqfoCVmSXucpqUclu4vBfy7p8GutI_xa__OMEITU1146mkNfdTYSv4lXbHfd87bHtOxfWpGA8yvJ-59rkTgQ_IP8A73LKR801x0ocguYOhu7-7QQKly2yBlAH_k4TMCoNvBz3CrlPOmxHT1rIkDHuenlj21SIDx4j1hu-2YJAgMtXtbkdWvYdFf_LuNoLDmQ_wQYB4dnZscfHjBd67gSdpe_QuVCs5t1mpia5QE8623nHBKV5ByPpYbg4xhaQMHpyZDtCxD8C9bMH9ciS4Dtqn5BIk-i2uIy009DRdLRuKM4bxPkeZ0WWTUZoA"
+    },
+    {
+        "authorizationCode": "c9fbd421c55f54d9ebab0e1e30fd7bbc8.0.syru.HfrSId1uM1aOVqFkHzj67w",
+        "authorizedScopes": [],
+        "email": null,
+        "fullName": {
+            "familyName": null,
+            "givenName": null,
+            "middleName": null,
+            "namePrefix": null,
+            "nameSuffix": null,
+            "nickname": null
+        },
+        "identityToken": "eyJraWQiOiJZdXlYb1kiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwcGxlaWQuYXBwbGUuY29tIiwiYXVkIjoiY29tLmdyZWVuY2hvaWNlZnVuZCIsImV4cCI6MTY2NDc5Nzg2MSwiaWF0IjoxNjY0NzExNDYxLCJzdWIiOiIwMDA4MTQuNDQ5YmUzZDUzZmZiNDFjMjg3MWZhYTMzOWNiZWRmNDUuMTgxNiIsIm5vbmNlIjoiNzQ1NzcwMGZjYzk3Njk0ZTdlMzYzYjk3NDBmMGQ5MjllMDEzZTJmNTgxZDRlNDYyYzQ0Njk0OGE5NTZlYTJlNiIsImNfaGFzaCI6IlM0TGFKazdsTU1KTzhZdXdoUlVNQ1EiLCJlbWFpbCI6IlplZXNoYW4udm9pZEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6InRydWUiLCJhdXRoX3RpbWUiOjE2NjQ3MTE0NjEsIm5vbmNlX3N1cHBvcnRlZCI6dHJ1ZX0.mjvkyxA_8jhGDqx2PdtW4lMcHWoC_dx9em8e9hciDC26ItllJN7zDyachyQfZXcMClxCeftpVO2P4ahmqxC7xAz6_ZdsQwG0E62HYmo9xAiyV9osaGIiolE1J-msToICtoREM06qEaa7ZATOPzYqSvXumjgeEF1w8YyzfA4a2shh_WNppp6309RhxOXJf-nmh_zr4_sTyPKJRNtRtcTvFews5EqzyyBdbmyxguLeGWHf-Pb8L9wqttQ9a7C06Ltgt_NR_3200NmvgHuAo07kNmRF94p2g7RgzA3fd0zBOcDHrjzRIpKM4MSvc5sCrFemWy2IZ03oJc8lL7FKy6dPxA",
+        "nonce": "meUrIZJoAxcG9QKVPey4_6fCx3IarRse",
+        "realUserStatus": 1,
+        "state": null,
+        "user": "000814.449be3d53ffb41c2871faa339cbedf45.1816"
+    }
+]
