@@ -92,7 +92,7 @@ const Splash = ({ navigation }) => {
             }
             else {
                 setTimeout(() => {
-                    navigation.navigate('OnBoarding')
+                    navigation.replace('OnBoarding')
                 }, 3500);
             }
         } else {

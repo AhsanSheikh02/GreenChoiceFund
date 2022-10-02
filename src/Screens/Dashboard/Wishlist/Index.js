@@ -77,11 +77,13 @@ const Wishlist = ({ navigation }) => {
             />
 
             <View style={styles.innerContainer}>
-                <TouchableOpacity
-                    activeOpacity={0.6}
-                    onPress={() => setFullImageVisible(true)}
-                ><Image source={Images.About} style={styles.infoIcon} resizeMode='contain' />
-                </TouchableOpacity>
+                <View style={styles.infoContainer}>
+                    <TouchableOpacity
+                        activeOpacity={0.6}
+                        onPress={() => setFullImageVisible(true)}
+                    ><Image source={Images.About} style={styles.infoIcon} resizeMode='contain' />
+                    </TouchableOpacity>
+                </View>
                 <FlatList
                     data={favoriteList}
                     showsVerticalScrollIndicator={false}

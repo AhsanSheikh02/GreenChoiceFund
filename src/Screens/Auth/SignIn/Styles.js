@@ -38,13 +38,6 @@ const styles = StyleSheet.create({
         fontFamily: Fonts.Regular,
 
     },
-    socialText: {
-        color: colors.White,
-        opacity: 0.6,
-        fontFamily: Fonts.Regular,
-        marginTop: 44,
-        alignSelf: 'center'
-    },
     label: {
         fontSize: 18,
         fontWeight: '700',
@@ -60,10 +53,32 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontFamily: Fonts.Regular,
         fontWeight: '400',
-        color:'#5B95DE',
-        marginTop:18,
-        alignSelf:'flex-end'
-    }
+        color: '#5B95DE',
+        marginTop: 18,
+        alignSelf: 'flex-end'
+    },
+    googleBtn: {
+        height: 50,
+        width: '100%',
+        alignItems: 'center',
+        justifyContent:'center',
+        flexDirection: 'row',
+        borderRadius: 12,
+        backgroundColor:colors.White,
+        marginTop: 20,
+        paddingHorizontal:'5%'
+    },
+    socialIcon:{
+        height:27,
+        width:27
+    },
+    socialText: {
+        fontSize:17,
+        color: colors.Black,
+        fontFamily: Fonts.Regular,
+        alignSelf: 'center',
+        marginLeft:10
+    },
 
 })
 export default styles

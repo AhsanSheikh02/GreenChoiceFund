@@ -41,7 +41,7 @@ const CategoryItem = (props) => {
             }}>
 
                 {
-                    !Item?.category_media[0]?.image ?
+                    Item?.category_media[0]?.image ?
                         <>
                             <ImageLoader
                                 isLoading={isLoading}
@@ -72,7 +72,7 @@ const CategoryItem = (props) => {
 
                         </>
                         :
-                        <Image source={Images.Fallback} style={styles.categoryImg} resizeMode='contain' />
+                        <Image source={Images.Fallback} style={styles.fallbackImg} resizeMode='contain' />
                 }
 
             </View>
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
         color: colors.White
     },
     fallbackImg: {
-        height: 30,
-        width: 30,
+        height: '70%',
+        width:'70%',
     },
 })

@@ -44,7 +44,7 @@ const MainStack = () => {
 
     return (
         <NavigationContainer>
-            <StatusBar barStyle='dark-content' translucent backgroundColor={colors.SecondaryTwo} />
+            <StatusBar barStyle='light-content' translucent backgroundColor={colors.SecondaryTwo} />
             <Stack.Navigator
 
                 screenOptions={{

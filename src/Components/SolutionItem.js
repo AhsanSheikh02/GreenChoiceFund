@@ -39,18 +39,31 @@ const SolutionItem = (props) => {
             onPress={() => navigation?.navigate('SolutionDetails', { Details: Item })}
             style={styles.mainContainer}>
             <View style={{ flex: 0.25, }}>
-                <ImageLoader isLoading={isLoading} />
-                <Image
-                    onLoadStart={() => {
-                        setIsLoading(true)
-                    }}
-                    onError={(error) => console.log(error)}
-                    onLoadEnd={() => {
-                        setIsLoading(false)
+                <View style={styles.solutionImg}>
 
-                    }}
-                    source={{ uri: Item?.solution_media[0]?.image }}
-                    style={styles.solutionImg} />
+                    {
+                        Item?.solution_media[0]?.image ?
+                            <>
+                                <ImageLoader isLoading={isLoading} />
+                                <Image
+                                    onLoadStart={() => {
+                                        setIsLoading(true)
+                                    }}
+                                    // onLoad={() => {
+                                    //     setIsLoading(false)
+                                    // }}
+                                    onError={(error) => console.log(error)}
+                                    onLoadEnd={() => {
+                                        setIsLoading(false)
+
+                                    }}
+                                    source={{ uri: Item?.solution_media[0]?.image }} style={styles.solutionImg} />
+
+                            </>
+                            :
+                            <Image source={Images.Fallback} style={styles.fallbackImg} resizeMode='contain' />
+                    }
+                </View>
             </View>
             <View style={{ flex: 0.75, }}>
                 <Text style={styles.title}>{Item?.name}</Text>
@@ -96,6 +109,12 @@ const styles = StyleSheet.create({
         height: 76,
         width: 76,
         borderRadius: 15,
-        backgroundColor:colors.Placeholder
+        backgroundColor: colors.Placeholder,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    fallbackImg: {
+        height: '60%',
+        width: '60%',
     },
 })

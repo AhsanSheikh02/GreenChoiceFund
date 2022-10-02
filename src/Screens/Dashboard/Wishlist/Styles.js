@@ -40,7 +40,17 @@ const styles = StyleSheet.create({
         height: 25,
         width: 25,
         tintColor: colors.White,
-        marginTop:15
+    },
+    infoContainer: {
+        height: 30,
+        width: 30,
+        tintColor: colors.White,
+        top: 15,
+        right: 15,
+        position: 'absolute',
+        zIndex: 9999,
+        justifyContent:'center',
+        alignItems:'center'
     }
 
 

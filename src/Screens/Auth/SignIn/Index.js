@@ -17,6 +17,7 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { useSelector, useDispatch } from 'react-redux';
 import Toast from 'react-native-tiny-toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AppleButton, appleAuth } from '@invertase/react-native-apple-authentication';
 
 import styles from './Styles'
 import Images from '../../../Assets/Images/Index'
@@ -66,6 +67,28 @@ const SignIn = ({ navigation, route }) => {
             console.log("googleSignIn-error", error);
         }
     };
+
+    const onAppleButtonPress = async () => {
+        // Start the sign-in request
+        const appleAuthRequestResponse = await appleAuth.performRequest({
+            requestedOperation: appleAuth.Operation.LOGIN,
+            requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.EMAIL],
+        });
+
+        // Ensure Apple returned a user identityToken
+        if (!appleAuthRequestResponse.identityToken) {
+            connsole.log('Apple Sign-In failed - no identify token returned');
+        }
+
+        // Create a Firebase credential from the response
+        const { identityToken, nonce } = appleAuthRequestResponse;
+        const appleCredential = auth.AppleAuthProvider.credential(identityToken, nonce);
+        console.log(appleAuthRequestResponse);
+        console.log(appleCredential);
+        // Sign the user in with the credential
+        return auth().signInWithCredential(appleCredential);
+        // console.log(signIn);
+    }
 
     const callAPIforLogin = () => {
         let platformId = Platform.OS === 'ios' ? 2 : 1
@@ -179,22 +202,32 @@ const SignIn = ({ navigation, route }) => {
                 />
 
                 {/* <Text style={styles.socialText}>{'Or Login with'}</Text> */}
+                {
+                    Platform.OS != 'ios' ?
+                        <View style={{ width: '100%', marginTop: 20, alignItems: 'center', flexDirection: 'row', justifyContent: 'space-evenly', paddingHorizontal: '24%' }}>
+                            {/* <SocialButton style={{ height: 26, width: 14.26, resizeMode: 'contain' }} img={Images.Facebook} /> */}
+                            <SocialButton onPress={() => googleSignUp()} style={{ height: 26, width: 25.37, resizeMode: 'contain' }} img={Images.Google} />
+                            <AppleButton
+                                buttonStyle={AppleButton.Style.BLACK}
+                                buttonType={AppleButton.Type.SIGN_IN}
+                                style={{
+                                    width: 50,
+                                    height: 50,
+                                    borderRadius: 10,
+                                    // backgroundColor: 'pink'
+                                }}
+                                onPress={() => onAppleButtonPress().then(() => console.log('Apple sign-in complete!'))}
+                            />
+                        </View>
+                        :
+                        <View style={styles.googleBtn}>
+                            <Image source={Images.GoogleIcon} style={styles.socialIcon} resizeMode='contain' />
+                            <Text style={styles.socialText}>{'Continue with Google'}</Text>
+                        </View>
 
-                <View style={{ width: '100%', marginTop: 20, alignItems: 'center' }}>
-                    {/* <SocialButton style={{ height: 26, width: 14.26, resizeMode: 'contain' }} img={Images.Facebook} /> */}
-                    {/* <SocialButton onPress={() => googleSignUp()} style={{ height: 26, width: 25.37, resizeMode: 'contain' }} img={Images.Google} /> */}
-                    {/* <AppleButton
-                        buttonStyle={AppleButton.Style.BLACK}
-                        buttonType={AppleButton.Type.SIGN_IN}
-                        style={{
-                            width: 50,
-                            height: 50,
-                            borderRadius: 10,
-                            backgroundColor: 'pink'
-                        }}
-                        onPress={() => onAppleButtonPress().then(() => console.log('Apple sign-in complete!'))}
-                    /> */}
-                </View>
+                }
+
+
 
 
             </KeyboardAwareScrollView>

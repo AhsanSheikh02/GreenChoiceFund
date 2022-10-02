@@ -32,8 +32,9 @@ export const Images = {
     Check: require('./check.png'),
     Money: require('./money.png'),
     Fallback: require('./imageFallback.png'),
+    GoogleIcon: require('./googleIcon.png'),
     
-
+    
 
 }
 

@@ -77,9 +77,7 @@ const SubCategoryItem = (props) => {
             onPress={() => navigation?.navigate('Solutions', { subCatId: Item?.id })}
             style={styles.mainContainer}>
             <View style={{ flex: 0.25, }}>
-                <ImageLoader
-                    isLoading={isLoading}
-                />
+
                 {/* <Image
                     source={{ uri: Item?.sub_category_media[0]?.image }}
                     style={styles.categoryImg}
@@ -92,41 +90,43 @@ const SubCategoryItem = (props) => {
 
                     }}
                 /> */}
+                <View style={styles.categoryImg}>
 
-                {
-                    !Item?.sub_category_media[0]?.image ?
-                        <>
-                            <ImageLoader
-                                isLoading={isLoading}
-                            />
-                            <Image
-                                // loadingIndicatorSource={() => {
-                                //     return (
-                                //         <ActivityIndicator
-                                //             size='small'
-                                //             color={colors.Secondary}
-                                //             style={{display: (isLoading) ? 'flex' : 'none'}}
-                                //             // animating={isLoading}
-                                //         />
-                                //     )
-                                // }}
-                                onLoadStart={() => {
-                                    setIsLoading(true)
-                                }}
-                                // onLoad={() => {
-                                //     setIsLoading(false)
-                                // }}
-                                onError={(error) => console.log(error)}
-                                onLoadEnd={() => {
-                                    setIsLoading(false)
+                    {
+                        Item?.sub_category_media[0]?.image ?
+                            <>
+                                <ImageLoader
+                                    isLoading={isLoading}
+                                />
+                                <Image
+                                    // loadingIndicatorSource={() => {
+                                    //     return (
+                                    //         <ActivityIndicator
+                                    //             size='small'
+                                    //             color={colors.Secondary}
+                                    //             style={{display: (isLoading) ? 'flex' : 'none'}}
+                                    //             // animating={isLoading}
+                                    //         />
+                                    //     )
+                                    // }}
+                                    onLoadStart={() => {
+                                        setIsLoading(true)
+                                    }}
+                                    // onLoad={() => {
+                                    //     setIsLoading(false)
+                                    // }}
+                                    onError={(error) => console.log(error)}
+                                    onLoadEnd={() => {
+                                        setIsLoading(false)
 
-                                }}
-                                source={{ uri: Item?.sub_category_media[0]?.image }} style={styles.categoryImg} />
+                                    }}
+                                    source={{ uri: Item?.sub_category_media[0]?.image }} style={styles.categoryImg} />
 
-                        </>
-                        :
-                        <Image source={Images.Fallback} style={styles.fallbackImg} resizeMode='contain' />
-                }
+                            </>
+                            :
+                            <Image source={Images.Fallback} style={styles.fallbackImg} resizeMode='contain' />
+                    }
+                </View>
             </View>
             <View style={{ flex: 0.75, }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -167,7 +167,9 @@ const styles = StyleSheet.create({
         height: 76,
         width: 76,
         borderRadius: 15,
-        backgroundColor: colors.Placeholder
+        backgroundColor: colors.Placeholder,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     favoriteIcon: {
         height: 22,
@@ -189,7 +191,7 @@ const styles = StyleSheet.create({
         marginTop: 5
     },
     fallbackImg: {
-        height: '70%',
-        width: '70%',
+        height: '60%',
+        width: '60%',
     },
 })
