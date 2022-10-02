@@ -111,6 +111,7 @@ const SignUp = ({ navigation, route }) => {
         // Create a Firebase credential from the response
         const { identityToken, nonce } = appleAuthRequestResponse;
         const appleCredential = auth.AppleAuthProvider.credential(identityToken, nonce);
+        console.log(appleAuthRequestResponse);
         console.log(appleCredential);
         // Sign the user in with the credential
         return auth().signInWithCredential(appleCredential);
@@ -421,9 +422,9 @@ const SignUp = ({ navigation, route }) => {
 
                 {/* <Text style={styles.socialText}>{'Or sign up with'}</Text> */}
 
-                <View style={{ width: '100%', marginTop: 20, alignItems: 'center' }}>
+                <View style={{ width: '100%', marginTop: 20, alignItems: 'center', flexDirection:'row', justifyContent:'space-evenly', paddingHorizontal: '24%' }}>
                     {/* <SocialButton style={{ height: 26, width: 14.26, resizeMode: 'contain' }} img={Images.Facebook} /> */}
-                    {/* <SocialButton onPress={() => googleSignUp()} style={{ height: 26, width: 25.37, resizeMode: 'contain' }} img={Images.Google} /> */}
+                    <SocialButton onPress={() => googleSignUp()} style={{ height: 26, width: 25.37, resizeMode: 'contain' }} img={Images.Google} />
                     {/* <AppleButton
                         buttonStyle={AppleButton.Style.BLACK}
                         buttonType={AppleButton.Type.SIGN_IN}
@@ -434,8 +435,9 @@ const SignUp = ({ navigation, route }) => {
                             backgroundColor:'pink'
                         }}
                         onPress={() => onAppleButtonPress().then(() => console.log('Apple sign-in complete!'))}
-                    />
-                    <SocialButton onPress={() => onAppleButtonPress()} style={{ height: 26, width: 21.85, resizeMode: 'contain' }} img={Images.Apple} /> */}
+                    /> */}
+                    
+                    <SocialButton onPress={() => onAppleButtonPress()} style={{ height: 26, width: 21.85, resizeMode: 'contain' }} img={Images.Apple} />
                 </View>
 
                 {/* <AppleButton
