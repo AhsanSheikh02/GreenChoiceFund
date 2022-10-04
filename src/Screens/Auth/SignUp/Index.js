@@ -80,16 +80,28 @@ const SignUp = ({ navigation, route }) => {
             const { idToken } = await GoogleSignin.signIn();
             const googleCredential = auth.GoogleAuthProvider.credential(idToken);
             const credentials = await auth().signInWithCredential(googleCredential);
-            // console.log(googleCredential?.token);
+            console.log(googleCredential?.token);
             // console.log({ idToken });
             // console.log('main credential object...', credentials);
             // console.log('additional user-info...', credentials?.additionalUserInfo?.profile);
             // console.log('user...', credentials?.user);
-            callAPIforSocialLogin(googleCredential?.token, JSON.stringify(credentials))
-            // setTimeout(() => {
-            //     navigation.navigate('PersonalDetails', { userDetail: credentials?.additionalUserInfo?.profile })
-            // }, 350);
-            // console.log("providerData ", credentials?.user?.providerData);
+            // console.log('user...', credentials?.user?.providerData);
+            const user_info = {
+                name: credentials?.additionalUserInfo?.profile?.name,
+                email: credentials?.additionalUserInfo?.profile.email,
+                email_verified: credentials?.additionalUserInfo?.profile?.email_verified,
+                picture: credentials?.additionalUserInfo?.profile?.picture,
+                family_name: credentials?.additionalUserInfo?.profile?.family_name,
+                given_name: credentials?.additionalUserInfo?.profile?.given_name,
+                phoneNumber: credentials?.user?.phoneNumber,
+                provider_data_uid: null,
+                uid: credentials?.user?.uid
+
+            }
+            // callAPIforSocialLogin(googleCredential?.token, user_info)
+            setTimeout(() => {
+                navigation.navigate('PersonalDetails', { userData: user_info })
+            }, 350);
 
         } catch (error) {
             console.log("googleSignIn-error", error);
@@ -181,16 +193,19 @@ const SignUp = ({ navigation, route }) => {
 
     }
 
-    const callAPIforSocialLogin = (googleToken, Object) => {
+    const callAPIforSocialLogin = (googleToken, userObject) => {
         let platformId = Platform.OS === 'ios' ? 2 : 1
         // console.log(Object);
         // console.log(googleToken);
         // return false;
 
-        SocialLogin(googleToken, 'google', deviceToken, deviceId, platformId, Object)
+        SocialLogin(googleToken, 'google', deviceToken, deviceId, platformId, userObject)
             .then((res) => {
                 console.log("callAPIforSocialLogin-res...", res);
                 // Toast.hide()
+                setTimeout(() => {
+                    navigation.navigate('PersonalDetails', { userData: res })
+                }, 350);
                 // TostMsg('Account registered')
                 // dispatch(userToken(res?.data?.token))
                 // AsyncStorage.setItem("authToken", res?.data?.token)
@@ -422,35 +437,33 @@ const SignUp = ({ navigation, route }) => {
 
                 {/* <Text style={styles.socialText}>{'Or sign up with'}</Text> */}
 
-                <View style={{ width: '100%', marginTop: 20, alignItems: 'center', flexDirection:'row', justifyContent:'space-evenly', paddingHorizontal: '24%' }}>
-                    {/* <SocialButton style={{ height: 26, width: 14.26, resizeMode: 'contain' }} img={Images.Facebook} /> */}
-                    <SocialButton onPress={() => googleSignUp()} style={{ height: 26, width: 25.37, resizeMode: 'contain' }} img={Images.Google} />
-                    {/* <AppleButton
-                        buttonStyle={AppleButton.Style.BLACK}
-                        buttonType={AppleButton.Type.SIGN_IN}
-                        style={{
-                            width: 50,
-                            height: 50,
-                            borderRadius:10,
-                            backgroundColor:'pink'
-                        }}
-                        onPress={() => onAppleButtonPress().then(() => console.log('Apple sign-in complete!'))}
-                    /> */}
-                    
-                    <SocialButton onPress={() => onAppleButtonPress()} style={{ height: 26, width: 21.85, resizeMode: 'contain' }} img={Images.Apple} />
-                </View>
+                {
+                    Platform.OS === 'ios' ?
+                        <View style={{ width: '100%', marginTop: 20, alignItems: 'center', flexDirection: 'row', justifyContent: 'space-evenly', paddingHorizontal: '24%' }}>
+                            {/* <SocialButton style={{ height: 26, width: 14.26, resizeMode: 'contain' }} img={Images.Facebook} /> */}
+                            <SocialButton onPress={() => googleSignUp()} style={{ height: 26, width: 25.37, resizeMode: 'contain' }} img={Images.Google} />
+                            <AppleButton
+                                buttonStyle={AppleButton.Style.BLACK}
+                                buttonType={AppleButton.Type.SIGN_IN}
+                                style={{
+                                    width: 50,
+                                    height: 50,
+                                    borderRadius: 10,
+                                    // backgroundColor: 'pink'
+                                }}
+                                onPress={() => onAppleButtonPress().then(() => console.log('Apple sign-in complete!'))}
+                            />
+                        </View>
+                        :
+                        <TouchableOpacity
+                            activeOpacity={0.6}
+                            onPress={() => googleSignUp()}
+                            style={styles.googleBtn}>
+                            <Image source={Images.GoogleIcon} style={styles.socialIcon} resizeMode='contain' />
+                            <Text style={styles.socialText}>{'Continue with Google'}</Text>
+                        </TouchableOpacity>
 
-                {/* <AppleButton
-                    buttonStyle={AppleButton.Style.BLACK}
-                    buttonType={AppleButton.Type.SIGN_IN}
-                    style={{
-                        width: 50, 
-                        height: 50, 
-                        // borderRadius:10,
-                        // backgroundColor:'pink'
-                    }}
-                    onPress={() => onAppleButtonPress()}
-                /> */}
+                }
 
             </KeyboardAwareScrollView>
             <Loader visible={isLoading} />

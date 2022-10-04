@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         justifyContent: 'center',
         paddingHorizontal: 26,
-        paddingVertical: 75,
+        paddingVertical: 50,
 
     },
     btnStyle: {
@@ -38,13 +38,6 @@ const styles = StyleSheet.create({
         color: colors.Dark,
         fontFamily: Fonts.Regular,
 
-    },
-    socialText: {
-        color: colors.White,
-        opacity: 0.6,
-        fontFamily: Fonts.Regular,
-        marginTop: 44,
-        alignSelf: 'center'
     },
     label: {
         fontSize: 18,
@@ -72,21 +65,42 @@ const styles = StyleSheet.create({
     },
     codeContainer: {
         width: '22%',
-        flexDirection:'row',
-        justifyContent:'center',
-        alignItems:'center'
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     numberContainer: {
         width: '78%',
         // paddingLeft:5,
-        justifyContent:'center'
+        justifyContent: 'center'
     },
     countryCode: {
         fontSize: 14,
         fontFamily: Fonts.Light,
         color: colors.White
-    }
-
+    },
+    googleBtn: {
+        height: 50,
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row',
+        borderRadius: 12,
+        backgroundColor: colors.White,
+        marginTop: 20,
+        paddingHorizontal: '5%'
+    },
+    socialIcon: {
+        height: 27,
+        width: 27
+    },
+    socialText: {
+        fontSize: 17,
+        color: colors.Black,
+        fontFamily: Fonts.Regular,
+        alignSelf: 'center',
+        marginLeft: 10
+    },
 })
 export default styles
 

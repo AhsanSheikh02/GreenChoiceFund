@@ -42,7 +42,7 @@ export const SplashMetaData = async () => {
     }
 };
 // Handle SocialLogin
-export const SocialLogin = async (access_token, provider, device_token, device_id, push_platform_id, social_login_details) => {
+export const SocialLogin = async (access_token, provider, device_token, device_id, push_platform_id, user_info) => {
     let requestName = 'SocialLogin'
     try {
         let data =
@@ -52,7 +52,7 @@ export const SocialLogin = async (access_token, provider, device_token, device_i
             device_token,
             device_id,
             push_platform_id,
-            social_login_details
+            user_info
         }
 
         console.log('.......request object.....', data);
@@ -176,7 +176,8 @@ export const UpdateProfile = async (name, country_code, contact_no, user_type_id
             name,
             country_code,
             contact_no,
-            user_type_id
+            user_type_id,
+            privacy_policy_version: 2.0
         }
         let res = await fetch.post(UPDATE_PROFILE, data, requestName)
         return res

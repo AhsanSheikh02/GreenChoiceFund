@@ -51,17 +51,33 @@ const SignIn = ({ navigation, route }) => {
 
 
     const googleSignUp = async () => {
+        // Toast.showLoading("Please wait..")
         try {
             const { idToken } = await GoogleSignin.signIn();
-
             const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-
             const credentials = await auth().signInWithCredential(googleCredential);
             console.log(googleCredential?.token);
             // console.log({ idToken });
             // console.log('main credential object...', credentials);
             // console.log('additional user-info...', credentials?.additionalUserInfo?.profile);
             // console.log('user...', credentials?.user);
+            // console.log('user...', credentials?.user?.providerData);
+            const user_info = {
+                name: credentials?.additionalUserInfo?.profile?.name,
+                email: credentials?.additionalUserInfo?.profile.email,
+                email_verified: credentials?.additionalUserInfo?.profile?.email_verified,
+                picture: credentials?.additionalUserInfo?.profile?.picture,
+                family_name: credentials?.additionalUserInfo?.profile?.family_name,
+                given_name: credentials?.additionalUserInfo?.profile?.given_name,
+                phoneNumber: credentials?.user?.phoneNumber,
+                provider_data_uid: null,
+                uid: credentials?.user?.uid
+
+            }
+            // callAPIforSocialLogin(googleCredential?.token, user_info)
+            setTimeout(() => {
+                navigation.navigate('PersonalDetails', { userData: user_info })
+            }, 350);
 
         } catch (error) {
             console.log("googleSignIn-error", error);
@@ -203,7 +219,7 @@ const SignIn = ({ navigation, route }) => {
 
                 {/* <Text style={styles.socialText}>{'Or Login with'}</Text> */}
                 {
-                    Platform.OS != 'ios' ?
+                    Platform.OS === 'ios' ?
                         <View style={{ width: '100%', marginTop: 20, alignItems: 'center', flexDirection: 'row', justifyContent: 'space-evenly', paddingHorizontal: '24%' }}>
                             {/* <SocialButton style={{ height: 26, width: 14.26, resizeMode: 'contain' }} img={Images.Facebook} /> */}
                             <SocialButton onPress={() => googleSignUp()} style={{ height: 26, width: 25.37, resizeMode: 'contain' }} img={Images.Google} />
@@ -220,10 +236,13 @@ const SignIn = ({ navigation, route }) => {
                             />
                         </View>
                         :
-                        <View style={styles.googleBtn}>
+                        <TouchableOpacity
+                            activeOpacity={0.6}
+                            onPress={() => googleSignUp()}
+                            style={styles.googleBtn}>
                             <Image source={Images.GoogleIcon} style={styles.socialIcon} resizeMode='contain' />
                             <Text style={styles.socialText}>{'Continue with Google'}</Text>
-                        </View>
+                        </TouchableOpacity>
 
                 }
 

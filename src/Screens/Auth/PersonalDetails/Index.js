@@ -26,7 +26,7 @@ import InputField from '../../../Components/InputField'
 import colors from '../../../Assets/Colors/Index';
 import SocialButton from '../../../Components/SocialBtn';
 import Loader from '../../../Components/Loader';
-import { RegisterUser, SocialLogin } from '../../../APIConfig/Config'
+import { RegisterUser, SocialLogin, UpdateProfile } from '../../../APIConfig/Config'
 import { Guest, userToken } from '../../../Redux/Actions/Auth';
 import CountryPickerModal from '../../../Components/CountryPicker';
 import Fonts from '../../../Assets/Fonts/Index';
@@ -56,6 +56,7 @@ const PersonalDetails = ({ navigation, route }) => {
     const [isLoading, setIsLoading] = useState(false)
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(null);
+    const [userTypeId, setUserTypeId] = useState('');
     const [userType, setUserType] = useState(userTypes);
 
     const nameRef = useRef();
@@ -73,11 +74,10 @@ const PersonalDetails = ({ navigation, route }) => {
             TostMsg('Name required')
         } else {
             Toast.showLoading("Please wait..")
-            UpdateProfile(name, code, number)
+            UpdateProfile(name, code, number,userTypeId)
                 .then((res) => {
                     Toast.hide()
                     TostMsg(res?.message)
-                    dispatch(userDetail(res))
                 }).catch((err) => {
                     Toast.hide()
                     // TostMsg(err)
@@ -87,29 +87,6 @@ const PersonalDetails = ({ navigation, route }) => {
         }
 
 
-    }
-
-    const callAPIforUpdatePe = (googleToken) => {
-        Toast.showLoading("Please wait..")
-        let platformId = Platform.OS === 'ios' ? 2 : 1
-
-        SocialLogin(googleToken, 'google', deviceToken, deviceId, platformId)
-            .then((res) => {
-                Toast.hide()
-                console.log(res);
-                // dispatch(userToken(res?.data?.token))
-                // AsyncStorage.setItem("authToken", res?.data?.token)
-                // setTimeout(() => {
-                //     navigation.reset({
-                //         index: 0,
-                //         routes: [{ name: 'HomeStack' }],
-                //     })
-                // }, 250);
-            }).catch((err) => {
-                Toast.hide()
-                // TostMsg(err)
-                console.log("callAPIforSocialLogin-err", err);
-            })
     }
 
     return (
@@ -188,13 +165,16 @@ const PersonalDetails = ({ navigation, route }) => {
                 <DropDownPicker
                     closeAfterSelecting={true}
                     open={open}
-                    value={value}
-                    items={userType}
+                    value={userTypeId}
+                    items={(userType) ? userType : []}
                     setOpen={setOpen}
-                    setValue={setValue}
-                    setUserType={setUserType}
+                    setValue={setUserTypeId}
+                    setItems={setUserType}
                     listMode="SCROLLVIEW"
                     dropDownMaxHeight={50}
+                    onChangeValue={item => {
+                        setUserTypeId(item)
+                    }}
                     // scrollViewProps={{
                     //     nestedScrollEnabled: true,
                     // }}
@@ -206,8 +186,6 @@ const PersonalDetails = ({ navigation, route }) => {
                         tintColor: 'rgba(255,255,255,0.2)',
                         alignSelf: 'center',
                     }}
-
-
                     tickIconStyle={{
                         width: 20,
                         height: 20,
@@ -244,11 +222,13 @@ const PersonalDetails = ({ navigation, route }) => {
                     }}
                 />
 
+                
+
                 <AppButton
                     label={"SAVE"}
                     style={styles.btnStyle}
                     labelStyle={styles.label}
-                    // onPress={() => callAPIforSocialLogin()}
+                // onPress={() => callAPIforSocialLogin()}
                 />
             </KeyboardAwareScrollView>
             <Loader visible={isLoading} />
