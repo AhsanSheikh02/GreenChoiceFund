@@ -223,7 +223,7 @@ const SignIn = ({ navigation, route }) => {
                         <View style={{ width: '100%', marginTop: 20, alignItems: 'center', flexDirection: 'row', justifyContent: 'space-evenly', paddingHorizontal: '24%' }}>
                             {/* <SocialButton style={{ height: 26, width: 14.26, resizeMode: 'contain' }} img={Images.Facebook} /> */}
                             <SocialButton onPress={() => googleSignUp()} style={{ height: 26, width: 25.37, resizeMode: 'contain' }} img={Images.Google} />
-                            <AppleButton
+                            {/* <AppleButton
                                 buttonStyle={AppleButton.Style.BLACK}
                                 buttonType={AppleButton.Type.SIGN_IN}
                                 style={{
@@ -233,7 +233,8 @@ const SignIn = ({ navigation, route }) => {
                                     // backgroundColor: 'pink'
                                 }}
                                 onPress={() => onAppleButtonPress().then(() => console.log('Apple sign-in complete!'))}
-                            />
+                            /> */}
+                            <SocialButton onPress={() => onAppleButtonPress()} style={{ height: 26, width: 21.85, resizeMode: 'contain' }} img={Images.Apple} />
                         </View>
                         :
                         <TouchableOpacity

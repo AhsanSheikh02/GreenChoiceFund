@@ -58,7 +58,7 @@ const SubCategories = ({ navigation, route }) => {
         callAPIforSubCategoryList();
     };
 
-    return (
+    return ( 
         <SafeAreaView style={styles.mainContainer}>
             <Header
                 Title={'Sub Categories'}
@@ -67,7 +67,7 @@ const SubCategories = ({ navigation, route }) => {
             />
 
             <View style={styles.innerContainer}>
-                {
+                { 
                     !isInternet ?
                         <Image source={Images.NoInternet} style={styles.connection} resizeMode='contain' />
                         :

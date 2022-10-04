@@ -39,3 +39,13 @@ target 'GreenChoiceFund' do
     __apply_Xcode_12_5_M1_post_install_workaround(installer)
   end
 end
+
+pre_install do |installer|
+  installer.pod_targets.each do |pod|
+    if pod.name.eql?('RNScreens')
+      def pod.build_type
+        Pod::BuildType.static_library
+      end
+    end
+  end
+end

@@ -47,7 +47,7 @@ const Splash = ({ navigation }) => {
     }
 
     const getDeviceId = async () => {
-        let Id = await DeviceInfo.getAndroidId()
+        let Id = await DeviceInfo.getDeviceId()
         dispatch(DeviceId(Id))
         console.log("getDeviceId", Id);
     }
