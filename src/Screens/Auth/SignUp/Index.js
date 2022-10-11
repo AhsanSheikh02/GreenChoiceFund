@@ -36,6 +36,7 @@ const SignUp = ({ navigation, route }) => {
 
     const EMAIL_REG = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
     const { deviceToken, deviceId } = useSelector(state => state.DeviceInfo)
+    const { loggedInUserType } = useSelector(state => state.Auth)
     const { userTypes } = useSelector(state => state.Splash)
     const dispatch = useDispatch()
 
@@ -178,9 +179,19 @@ const SignUp = ({ navigation, route }) => {
                     dispatch(userToken(res?.data?.token))
                     dispatch(UserType(res?.data?.user?.user_type_id))
                     AsyncStorage.setItem("authToken", res?.data?.token)
-                    setTimeout(() => {
-                        navigation.navigate('OnBoarding')
-                    }, 250);
+                    if (loggedInUserType === '1') {
+                        setTimeout(() => {
+                            navigation.reset({
+                                index: 0,
+                                routes: [{ name: 'HomeStack' }],
+                            })
+                        }, 250);
+                    }
+                    else {
+                        setTimeout(() => {
+                            navigation.replace('OnBoarding')
+                        }, 250);
+                    }
                     resetStateToDefault()
                 }).catch((err) => {
                     Toast.hide()

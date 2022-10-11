@@ -24,7 +24,7 @@ import colors from '../../../Assets/Colors/Index';
 const Settings = ({ navigation }) => {
 
     const { deviceToken, deviceId } = useSelector(state => state.DeviceInfo)
-    const { guest, authToken, loggedInUserDetails } = useSelector(state => state.Auth)
+    const { guest, authToken, loggedInUserDetails, loggedInUserType } = useSelector(state => state.Auth)
     const [isLoading, setIsLoading] = useState(false)
     const dispatch = useDispatch()
 
@@ -152,7 +152,7 @@ const Settings = ({ navigation }) => {
                         }
 
                         {
-                            !guest &&
+                            (!guest && loggedInUserType === '1') &&
                             <ProfileSettingComponent
                                 Icon={Images.Money}
                                 Title={'Recent Investments'}

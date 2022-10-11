@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { View, Pressable, Text, Image, StyleSheet } from 'react-native';
-import { createStackNavigator,CardStyleInterpolators } from '@react-navigation/stack'
+import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack'
 import { useSelector } from 'react-redux';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -64,8 +64,9 @@ const HomeStackScreens = () => {
 
 const TabStack = ({ navigation }) => {
 
-    const { guest } = useSelector(state => state.Auth)
+    const { guest, loggedInUserType } = useSelector(state => state.Auth)
     const { noOfCartItems } = useSelector(state => state.Cart)
+
 
     return (
         <Tab.Navigator
@@ -125,33 +126,37 @@ const TabStack = ({ navigation }) => {
                             <Text style={[styles.tabTitle, { color: state.index === 1 ? colors.Secondary : '#454d6c' }]}>{'Home'}</Text>
                         </Pressable>
 
-                        <Pressable
-                            style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
-                            onPress={() => {
-                                navigation.navigate("Cart")
-                            }}>
-                            {
-                                noOfCartItems > 0 &&
-                                <View style={styles.count}>
-                                    <Text style={{
-                                        fontSize: 13,
-                                        fontFamily: Fonts.Regular,
-                                        fontWeight: '400',
-                                        color: colors.White,
-                                    }}>{noOfCartItems}</Text>
-                                </View>
-                            }
-                            <Image
-                                source={Images.Cart}
-                                resizeMode='contain'
-                                style={{
-                                    width: 22,
-                                    height: 22,
-                                    tintColor: state.index === 2 ? colors.Secondary : '#454d6c'
-                                }}
-                            />
-                            <Text style={[styles.tabTitle, { color: state.index === 2 ? colors.Secondary : '#454d6c' }]}>{'Cart'}</Text>
-                        </Pressable>
+                        {
+                            loggedInUserType === '1' &&
+                            <Pressable
+                                style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+                                onPress={() => {
+                                    navigation.navigate("Cart")
+                                }}>
+                                {
+                                    noOfCartItems > 0 &&
+                                    <View style={styles.count}>
+                                        <Text style={{
+                                            fontSize: 13,
+                                            fontFamily: Fonts.Regular,
+                                            fontWeight: '400',
+                                            color: colors.White,
+                                        }}>{noOfCartItems}</Text>
+                                    </View>
+                                }
+                                <Image
+                                    source={Images.Cart}
+                                    resizeMode='contain'
+                                    style={{
+                                        width: 22,
+                                        height: 22,
+                                        tintColor: state.index === 2 ? colors.Secondary : '#454d6c'
+                                    }}
+                                />
+                                <Text style={[styles.tabTitle, { color: state.index === 2 ? colors.Secondary : '#454d6c' }]}>{'Cart'}</Text>
+                            </Pressable>
+                        }
+
                         <Pressable
                             onPress={() => { navigation.navigate("Settings") }}
                             style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -162,10 +167,10 @@ const TabStack = ({ navigation }) => {
                                 style={{
                                     width: 21,
                                     height: 21,
-                                    tintColor: state.index === 3 ? colors.Secondary : '#454d6c'
+                                    tintColor: state.index === loggedInUserType === '1' ? 2 : 3 ? colors.Secondary : '#454d6c'
                                 }}
                             />
-                            <Text style={[styles.tabTitle, { color: state.index === 3 ? colors.Secondary : '#454d6c' }]}>{'Settings'}</Text>
+                            <Text style={[styles.tabTitle, { color: state.index === loggedInUserType === '1' ? 2 : 3 ? colors.Secondary : '#454d6c' }]}>{'Settings'}</Text>
                         </Pressable>
 
                     </View>
