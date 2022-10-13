@@ -33,7 +33,7 @@ import Fonts from '../../../Assets/Fonts/Index';
 
 const PersonalDetails = ({ navigation, route }) => {
 
-    const userDetails = route?.params?.userDetail || ''
+    const {userData} = route?.params || ''
 
     const EMAIL_REG = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
     const { deviceToken, deviceId } = useSelector(state => state.DeviceInfo)
@@ -48,8 +48,8 @@ const PersonalDetails = ({ navigation, route }) => {
         })
     }
 
-    const [name, setName] = useState(userDetails?.name)
-    const [email, setEmail] = useState(userDetails?.email)
+    const [name, setName] = useState(userData?.data?.name)
+    const [email, setEmail] = useState(userData?.data?.email)
     const [code, setCode] = useState('92')
     const [number, setNumber] = useState('')
     const [isCountryModal, setIsCountryModal] = useState(false)
@@ -77,10 +77,11 @@ const PersonalDetails = ({ navigation, route }) => {
             UpdateProfile(name, code, number,userTypeId)
                 .then((res) => {
                     Toast.hide()
-                    TostMsg(res?.message)
+                    TostMsg('Token is invalid')
                 }).catch((err) => {
                     Toast.hide()
                     // TostMsg(err)
+                    TostMsg('Token is invalid')
                     console.log("callAPIforUpdateProfile-err", err);
                 })
 
@@ -114,7 +115,7 @@ const PersonalDetails = ({ navigation, route }) => {
                     customStyle={{
                         marginTop: 37
                     }}
-                    editable={false}
+                    // editable={false}
                 />
 
                 <InputField
@@ -130,7 +131,7 @@ const PersonalDetails = ({ navigation, route }) => {
                     customStyle={{
                         marginTop: 12
                     }}
-                    editable={false}
+                    // editable={false}
                 />
 
                 <View style={styles.phoneNumberContainer}>
@@ -228,7 +229,7 @@ const PersonalDetails = ({ navigation, route }) => {
                     label={"SAVE"}
                     style={styles.btnStyle}
                     labelStyle={styles.label}
-                // onPress={() => callAPIforSocialLogin()}
+                onPress={() => callAPIforUpdateProfile()}
                 />
             </KeyboardAwareScrollView>
             <Loader visible={isLoading} />

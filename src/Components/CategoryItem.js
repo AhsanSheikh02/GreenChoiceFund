@@ -12,6 +12,7 @@ import {
 
 import { useSelector, useDispatch } from 'react-redux'
 import SimpleToast from 'react-native-simple-toast'
+import Video from 'react-native-video'
 
 import colors from '../Assets/Colors/Index'
 import Fonts from '../Assets/Fonts/Index'
@@ -41,38 +42,71 @@ const CategoryItem = (props) => {
             }}>
 
                 {
-                    Item?.category_media[0]?.image ?
-                        <>
-                            <ImageLoader
-                                isLoading={isLoading}
-                            />
-                            <Image
-                                // loadingIndicatorSource={() => {
-                                //     return (
-                                //         <ActivityIndicator
-                                //             size='small'
-                                //             color={colors.Secondary}
-                                //             style={{display: (isLoading) ? 'flex' : 'none'}}
-                                //             // animating={isLoading}
-                                //         />
-                                //     )
-                                // }}
+                    (Item?.category_media[0]?.image && Item?.category_media[0]?.type === 'video') ?
+                        <View style={{ height: 250, width: '100%', borderTopLeftRadius: 15, borderTopRightRadius: 15, overflow: 'hidden' }}>
+                            <Video source={{ uri: Item?.category_media[0]?.image }}
+                                // onBuffer={this.onBuffer}                // Callback when remote video is buffering
+                                // onError={this.videoError}               // Callback when video cannot be loaded
+                                style={{ height: 250, width: '100%', }}
+                                resizeMode={'contain'}
+                                onBuffer={() => {
+                                    setIsLoading(true)
+                                }}
                                 onLoadStart={() => {
                                     setIsLoading(true)
                                 }}
-                                // onLoad={() => {
-                                //     setIsLoading(false)
-                                // }}
-                                onError={(error) => console.log(error)}
                                 onLoadEnd={() => {
                                     setIsLoading(false)
-
                                 }}
-                                source={{ uri: Item?.category_media[0]?.image }} style={styles.categoryImg} />
-
-                        </>
+                                onReadyForDisplay={()=>{
+                                    setIsLoading(false)
+                                }}
+                            // onLoad={() => {
+                            //     setIsLoading(false)
+                            // }}
+                            />
+                            {
+                                isLoading &&
+                                <ImageLoader
+                                    isLoading={isLoading}
+                                />
+                            }
+                        </View>
                         :
-                        <Image source={Images.Fallback} style={styles.fallbackImg} resizeMode='contain' />
+                        (
+                            (Item?.category_media[0]?.image && (Item?.category_media[0]?.type === 'image' || Item?.category_media[0]?.type === 'gif')) ?
+                                <>
+                                    <ImageLoader
+                                        isLoading={isLoading}
+                                    />
+                                    <Image
+                                        // loadingIndicatorSource={() => {
+                                        //     return (
+                                        //         <ActivityIndicator
+                                        //             size='small'
+                                        //             color={colors.Secondary}
+                                        //             style={{display: (isLoading) ? 'flex' : 'none'}}
+                                        //             // animating={isLoading}
+                                        //         />
+                                        //     )
+                                        // }}
+                                        onLoadStart={() => {
+                                            setIsLoading(true)
+                                        }}
+                                        // onLoad={() => {
+                                        //     setIsLoading(false)
+                                        // }}
+                                        onError={(error) => console.log(error)}
+                                        onLoadEnd={() => {
+                                            setIsLoading(false)
+
+                                        }}
+                                        source={{ uri: Item?.category_media[0]?.image }} style={styles.categoryImg} />
+
+                                </>
+                                :
+                                <Image source={Images.Fallback} style={styles.fallbackImg} resizeMode='contain' />
+                        )
                 }
 
             </View>
@@ -107,6 +141,6 @@ const styles = StyleSheet.create({
     },
     fallbackImg: {
         height: '70%',
-        width:'70%',
+        width: '70%',
     },
 })

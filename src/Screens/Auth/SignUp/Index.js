@@ -99,10 +99,7 @@ const SignUp = ({ navigation, route }) => {
                 uid: credentials?.user?.uid
 
             }
-            // callAPIforSocialLogin(googleCredential?.token, user_info)
-            setTimeout(() => {
-                navigation.navigate('PersonalDetails', { userData: user_info })
-            }, 350);
+            callAPIforSocialLogin(googleCredential?.token, user_info)
 
         } catch (error) {
             console.log("googleSignIn-error", error);
@@ -126,9 +123,9 @@ const SignUp = ({ navigation, route }) => {
         const appleCredential = auth.AppleAuthProvider.credential(identityToken, nonce);
         console.log(appleAuthRequestResponse);
         console.log(appleCredential);
-        // Sign the user in with the credential
+        callAPIforSocialLogin(appleAuthRequestResponse?.identityToken)
         return auth().signInWithCredential(appleCredential);
-        // console.log(signIn);
+
     }
 
     // const facebookSignup = async () => {
@@ -179,7 +176,7 @@ const SignUp = ({ navigation, route }) => {
                     dispatch(userToken(res?.data?.token))
                     dispatch(UserType(res?.data?.user?.user_type_id))
                     AsyncStorage.setItem("authToken", res?.data?.token)
-                    if (loggedInUserType === '1') {
+                    if (res?.data?.user?.user_type_id === '1') {
                         setTimeout(() => {
                             navigation.reset({
                                 index: 0,
@@ -213,10 +210,13 @@ const SignUp = ({ navigation, route }) => {
         SocialLogin(googleToken, 'google', deviceToken, deviceId, platformId, userObject)
             .then((res) => {
                 console.log("callAPIforSocialLogin-res...", res);
+                if (res.code === 200) {
+                    setTimeout(() => {
+                        navigation.navigate('PersonalDetails', { userData: res })
+                    }, 350);
+                }
                 // Toast.hide()
-                setTimeout(() => {
-                    navigation.navigate('PersonalDetails', { userData: res })
-                }, 350);
+
                 // TostMsg('Account registered')
                 // dispatch(userToken(res?.data?.token))
                 // AsyncStorage.setItem("authToken", res?.data?.token)
@@ -453,7 +453,7 @@ const SignUp = ({ navigation, route }) => {
                         <View style={{ width: '100%', marginTop: 20, alignItems: 'center', flexDirection: 'row', justifyContent: 'space-evenly', paddingHorizontal: '24%' }}>
                             {/* <SocialButton style={{ height: 26, width: 14.26, resizeMode: 'contain' }} img={Images.Facebook} /> */}
                             <SocialButton onPress={() => googleSignUp()} style={{ height: 26, width: 25.37, resizeMode: 'contain' }} img={Images.Google} />
-                            <AppleButton
+                            {/* <AppleButton
                                 buttonStyle={AppleButton.Style.BLACK}
                                 buttonType={AppleButton.Type.SIGN_IN}
                                 style={{
@@ -463,7 +463,9 @@ const SignUp = ({ navigation, route }) => {
                                     // backgroundColor: 'pink'
                                 }}
                                 onPress={() => onAppleButtonPress().then(() => console.log('Apple sign-in complete!'))}
-                            />
+                            /> */}
+                            <SocialButton onPress={() => onAppleButtonPress()} style={{ height: 26, width: 21.85, resizeMode: 'contain' }} img={Images.Apple} />
+
                         </View>
                         :
                         <TouchableOpacity

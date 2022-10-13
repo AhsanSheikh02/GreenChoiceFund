@@ -167,10 +167,10 @@ const TabStack = ({ navigation }) => {
                                 style={{
                                     width: 21,
                                     height: 21,
-                                    tintColor: state.index === loggedInUserType === '1' ? 2 : 3 ? colors.Secondary : '#454d6c'
+                                    tintColor: state.index === (loggedInUserType === '1' ? 3 : 2)? colors.Secondary : '#454d6c'
                                 }}
                             />
-                            <Text style={[styles.tabTitle, { color: state.index === loggedInUserType === '1' ? 2 : 3 ? colors.Secondary : '#454d6c' }]}>{'Settings'}</Text>
+                            <Text style={[styles.tabTitle, { color: state.index === (loggedInUserType === '1' ? 3: 2) ? colors.Secondary : '#454d6c' }]}>{'Settings'}</Text>
                         </Pressable>
 
                     </View>

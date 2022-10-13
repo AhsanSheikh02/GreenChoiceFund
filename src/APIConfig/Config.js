@@ -55,7 +55,7 @@ export const SocialLogin = async (access_token, provider, device_token, device_i
             user_info
         }
 
-        console.log('.......request object.....', data);
+        // console.log('.......request object.....', data);
         let res = await fetch.post(SOCIAL_LOGIN, data, requestName)
         return res
     } catch (error) {

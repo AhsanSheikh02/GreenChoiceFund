@@ -33,6 +33,7 @@ const SolutionDetails = ({ navigation, route }) => {
     const Details = route?.params?.Details || ''
     const { isInternet } = useSelector(state => state.DeviceInfo)
     const { noOfCartItems } = useSelector(state => state.Cart)
+    const { loggedInUserType } = useSelector(state => state.Auth)
 
     const [indicator, setIndicator] = useState(0)
     const [isLoading, setIsLoading] = useState(false)
@@ -161,16 +162,19 @@ const SolutionDetails = ({ navigation, route }) => {
                         </View>
                 }
                 <View style={{ position: 'absolute', bottom: 115, alignSelf: 'center', width: '100%', paddingHorizontal: 16 }}>
-                    <AppButton
-                        disable={added}
-                        label={"Add to cart"}
-                        style={{ backgroundColor: added ? 'grey' : colors.Secondary, }}
-                        labelStyle={styles.label}
-                        onPress={() => {
-                            callAPIforAddToCart()
+                    {
+                        loggedInUserType === '1' &&
+                        <AppButton
+                            disable={added}
+                            label={added ? "Added to cart":"Add to cart"}
+                            style={{ backgroundColor: added ? 'grey' : colors.Secondary, }}
+                            labelStyle={styles.label}
+                            onPress={() => {
+                                callAPIforAddToCart()
 
-                        }}
-                    />
+                            }}
+                        />
+                    }
                 </View>
             </View>
 

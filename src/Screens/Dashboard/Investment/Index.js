@@ -120,6 +120,8 @@ const Investment = ({ navigation, route }) => {
             TostMsg('Phone No required')
         } else if (amount === '') {
             TostMsg('Enter Amount')
+        }else if (amount > '25000') {
+            TostMsg('Amount can not be greater than 25000')
         } else if (address === '') {
             TostMsg('Address required')
         } else if (getAge(dob) <= 15) {
@@ -302,7 +304,7 @@ const Investment = ({ navigation, route }) => {
                                         token: linkToken,
                                     }}
                                     onSuccess={(success: LinkSuccess) => {
-                                        console.log(JSON.parse(success.metadata.metadataJson))
+                                        console.log("Plaid success....",JSON.parse(success.metadata.metadataJson))
                                         callAPIforAccessToken(JSON.parse(success?.metadata?.metadataJson))
                                     }}
                                     onExit={(exit: LinkExit) => { console.log({ exit }) }}

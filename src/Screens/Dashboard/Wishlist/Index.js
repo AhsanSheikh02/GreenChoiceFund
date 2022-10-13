@@ -73,7 +73,7 @@ const Wishlist = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.mainContainer}>
             <Header
-                Title={'Wishlist'}
+                Title={'Portfolio'}
             />
 
             <View style={styles.innerContainer}>
@@ -89,7 +89,7 @@ const Wishlist = ({ navigation }) => {
                     showsVerticalScrollIndicator={false}
                     keyExtractor={item => item.id}
                     renderItem={(item) => renderItem(item)}
-                    contentContainerStyle={{ flexGrow: 1, paddingTop: 15, justifyContent: favoriteList.length > 0 ? 'flex-start' : 'center' }}
+                    contentContainerStyle={{ flexGrow: 1, paddingTop: 45, justifyContent: favoriteList.length > 0 ? 'flex-start' : 'center' }}
                     ListEmptyComponent={() => {
                         if (isLoading) {
                             return <ActivityIndicator size={'large'} color={colors.White} />

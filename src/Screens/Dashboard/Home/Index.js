@@ -68,6 +68,7 @@ const Home = ({ navigation }) => {
     };
 
     const renderItem = ({ item }) => {
+        console.log('renderItem',item);
         return (
             <CategoryItem
                 Item={item}

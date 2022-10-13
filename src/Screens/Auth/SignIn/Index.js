@@ -29,7 +29,7 @@ import { LoginUser } from '../../../APIConfig/Config';
 import { Guest, userToken, UserType, userDetail } from '../../../Redux/Actions/Auth';
 
 const SignIn = ({ navigation, route }) => {
-
+ 
     const EMAIL_REG = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
     const { deviceToken, deviceId } = useSelector(state => state.DeviceInfo)
     const dispatch = useDispatch()
@@ -59,9 +59,9 @@ const SignIn = ({ navigation, route }) => {
             console.log(googleCredential?.token);
             // console.log({ idToken });
             // console.log('main credential object...', credentials);
-            // console.log('additional user-info...', credentials?.additionalUserInfo?.profile);
-            // console.log('user...', credentials?.user);
-            // console.log('user...', credentials?.user?.providerData);
+            console.log('additional user-info...', credentials?.additionalUserInfo?.profile);
+            console.log('user...', credentials?.user);
+            console.log('user...', credentials?.user?.providerData);
             const user_info = {
                 name: credentials?.additionalUserInfo?.profile?.name,
                 email: credentials?.additionalUserInfo?.profile.email,
@@ -186,6 +186,7 @@ const SignIn = ({ navigation, route }) => {
                     customStyle={{
                         marginTop: 37
                     }}
+                    autoCapitalize={'none'}
                 />
 
                 <InputField

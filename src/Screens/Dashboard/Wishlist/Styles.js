@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
         height: 30,
         width: 30,
         tintColor: colors.White,
-        top: 15,
+        top: 10,
         right: 15,
         position: 'absolute',
         zIndex: 9999,

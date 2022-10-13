@@ -80,7 +80,7 @@ const AllInvestments = ({ navigation, route }) => {
 
     const onRefresh = () => {
         setIsRefresh(true);
-        callAPIforAccounts();
+        callAPIforRecentInvestments();
     };
 
     const renderItem = ({ item, index }) => {
