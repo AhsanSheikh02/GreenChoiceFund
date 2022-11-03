@@ -102,18 +102,17 @@ const Accounts = ({ navigation, route }) => {
             detailObj?.address,
             detailObj?.dob,
             detailObj?.amount,
-            detailObj?.itemId,
             selectedAccount?.account_id,
             accessToken
         ).then((res) => {
             Toast.hide()
-            TostMsg('Paid Successfully')
+            TostMsg(res?.message)
             setTimeout(() => {
                 navigation.pop(2)
             }, 1000);
         }).catch((err) => {
             Toast.hide()
-            // TostMsg(err)
+            TostMsg(err)
             console.log("callAPIforInvestment-err", err);
         })
 
@@ -201,7 +200,7 @@ const Accounts = ({ navigation, route }) => {
                             keyExtractor={item => item.account_id}
                             renderItem={(item) => renderItem(item)}
                             contentContainerStyle={{ flexGrow: 1, paddingTop: 15, justifyContent: accountsList.length > 0 ? 'flex-start' : 'center' }}
-                            ListHeaderComponent={listHeaderComponent}
+                            ListHeaderComponent={accountsList.length > 0 ? listHeaderComponent : null}
                             ListEmptyComponent={() => {
                                 if (isLoading) {
                                     return <ActivityIndicator size={'large'} color={colors.White} />

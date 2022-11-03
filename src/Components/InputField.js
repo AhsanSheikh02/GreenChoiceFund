@@ -31,15 +31,23 @@ const InputField =
     multiline,
     rightIconStyle,
     editable,
-    maxLength
+    maxLength,
+    isLeftIcon
   }) => {
-
     return (
       <View style={[styles.mainContainer, customStyle]}>
 
+        {
+          isLeftIcon &&
+          <View style={styles.currencyIcon}>
+            <Text style={{ fontSize: 14, fontFamily: Fonts.Light, color: colors.White }}>{'$'}</Text>
+          </View>
+        }
+
+
         <View style={[styles.input, {
-          width: isRightIcon ? '88%' : '100%',
-          justifyContent: multiline ? 'flex-start' : 'center'
+          width: isRightIcon ? '88%' : isLeftIcon ? '97%' : '100%',
+          justifyContent: multiline ? 'flex-start' : 'center',
         }]}>
           <TextInput
             style={{ fontSize: 14, fontFamily: Fonts.Light, color: colors.White }}
@@ -59,7 +67,9 @@ const InputField =
             maxLength={maxLength}
 
           />
+
         </View>
+
 
         {
           isRightIcon &&
@@ -72,6 +82,8 @@ const InputField =
             </TouchableOpacity>
           </View>
         }
+
+
 
       </View>
 
@@ -104,6 +116,12 @@ const styles = StyleSheet.create({
   passwordIcon: {
     height: '100%',
     width: '12%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  currencyIcon: {
+    height: '100%',
+    width: '3%',
     justifyContent: 'center',
     alignItems: 'center',
   },

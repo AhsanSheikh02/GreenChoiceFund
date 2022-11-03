@@ -81,7 +81,11 @@ import org.apache.tools.ant.taskdefs.condition.Os
 project.ext.react = [
     enableHermes: false,  // clean and rebuild if changing
     bundleInDebug:true
+<<<<<<< HEAD
 ] 
+=======
+]
+>>>>>>> 66db6c0d32c9aea8776aac6e73692d718a6de50e
 
 apply from: "../../node_modules/react-native/react.gradle"
 

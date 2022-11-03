@@ -52,9 +52,10 @@ const Investment = ({ navigation, route }) => {
     const [indicator, setIndicator] = useState(0)
     const [name, setName] = useState('')
     const [number, setNumber] = useState('')
-    const [code, setCode] = useState('92')
+    const [code, setCode] = useState('1')
     const [address, setAddress] = useState('')
     const [amount, setAmount] = useState('')
+    const [symbol, setSymbol] = useState('$')
     const [dob, setDob] = useState(new Date())
     const [age, setAge] = useState(0)
     const [isAllInfo, setIsAllInfo] = useState(false)
@@ -64,13 +65,14 @@ const Investment = ({ navigation, route }) => {
     const [isVisible, setIsVisible] = useState(false)
     const [fullImageVisible, setFullImageVisible] = useState(false)
     const [selectedIndex, setSelectedIndex] = useState('')
-    const {loggedInUserDetails } = useSelector(state => state.Auth)
+    const { loggedInUserDetails } = useSelector(state => state.Auth)
 
     const listRef = useRef(null)
     const nameRef = useRef()
     const numberRef = useRef()
     const addressRef = useRef()
     const amountRef = useRef()
+    const timeout = useRef(null);
 
     useEffect(() => {
         if (isInternet) {
@@ -115,13 +117,16 @@ const Investment = ({ navigation, route }) => {
 
     const callAPIforLinkToken = () => {
         if (name === '') {
-            TostMsg('Name required')
+            TostMsg('Name is required')
         } else if (number === '') {
-            TostMsg('Phone No required')
+            TostMsg('Phone No is required')
         } else if (amount === '') {
-            TostMsg('Enter Amount')
+            TostMsg('Amount is required')
+        } else if (amount > 25000) {
+            console.log(amount);
+            TostMsg('Amount can not be greater than 25000')
         } else if (address === '') {
-            TostMsg('Address required')
+            TostMsg('Address is required')
         } else if (getAge(dob) <= 15) {
             console.log(age);
             TostMsg('You must be over 18 for this program')
@@ -161,15 +166,14 @@ const Investment = ({ navigation, route }) => {
                 setTimeout(() => {
                     navigation.navigate('Accounts', {
                         accessToken: res?.data?.access_token,
-                        detailObj:{
-                            name:name,
-                            email:loggedInUserDetails?.email,
-                            code:code,
-                            number:number,
-                            address:address,
+                        detailObj: {
+                            name: name,
+                            email: loggedInUserDetails?.email,
+                            code: code,
+                            number: number,
+                            address: address,
                             dob: moment(dob).format('DD-MM-YYYY'),
-                            amount:amount,
-                            itemId:res?.data?.item_id,
+                            amount: amount,
                         }
                     })
                 }, 350);
@@ -182,7 +186,19 @@ const Investment = ({ navigation, route }) => {
     }
 
 
+    const onChangeHandler = (value) => {
+        let dollar = '$'
+        if (value != '') {
+            value.slice(1)
+            clearTimeout(timeout.current);
+            setAmount(value);
+            timeout.current = setTimeout(() => {
+                console.log('hehehehe', dollar, amount);
+                setAmount(dollar + amount)
+            }, 350);
+        }
 
+    }
 
 
     return (
@@ -199,7 +215,7 @@ const Investment = ({ navigation, route }) => {
                     </View>
                     :
                     <KeyboardAwareScrollView
-                        keyboardShouldPersistTaps='always'
+                        keyboardShouldPersistTaps='handled'
                         contentContainerStyle={styles.scrollView}
                         showsVerticalScrollIndicator={false} >
 
@@ -213,14 +229,13 @@ const Investment = ({ navigation, route }) => {
                                 numberRef?.current?.focus()
                             }}
                             placeholder='Name'
-                            customStyle={{
-                                marginTop: 12
-                            }}
+                            isLeftIcon={false}
+
                         />
 
                         <View style={styles.phoneNumberContainer}>
                             <View
-                                style={styles.codeContainer}>
+                                style={[styles.codeContainer, { width: (code.length > 2 && code.length < 4) ? '23%' : code.length > 3 ? '26%' : '20%', }]}>
                                 <CountryPickerModal
                                     callingCode={(code) => {
                                         setCode(code)
@@ -228,7 +243,7 @@ const Investment = ({ navigation, route }) => {
                                     visible={isCountryModal} />
                                 <Text style={styles.countryCode}>{`+${code}`}</Text>
                             </View>
-                            <View style={styles.numberContainer}>
+                            <View style={[styles.numberContainer,{width: (code.length>2 && code.length<4)? '77%':  code.length>3 ? '74%':'80%',}]}>
                                 <TextInput
                                     style={{ fontSize: 14, fontFamily: Fonts.Regular, color: colors.White }}
                                     ref={numberRef}
@@ -236,7 +251,6 @@ const Investment = ({ navigation, route }) => {
                                     onChangeText={(val) => setNumber(val)}
                                     value={number}
                                     keyboardType={'number-pad'}
-                                    maxLength={10}
                                     placeholderTextColor={'rgba(255,255,255,0.2)'}
                                     returnKeyType={'next'}
                                     onSubmitEditing={() => {
@@ -255,10 +269,13 @@ const Investment = ({ navigation, route }) => {
                             onSubmitEditing={() => {
                                 addressRef?.current?.focus()
                             }}
+                            keyBoardType={'numeric'}
                             placeholder='Amount'
                             customStyle={{
                                 marginTop: 12
                             }}
+                            isLeftIcon={amount.length > 0}
+
                         />
 
                         <View style={styles.dobContainer}>
@@ -290,9 +307,13 @@ const Investment = ({ navigation, route }) => {
                             placeholder='Tax Filing Address'
                             customStyle={{
                                 marginTop: 12,
-                                height: 150
+                                height: 150,
+                                paddingVertical: 6,
+                                paddingHorizontal: 12,
                             }}
                             multiline={true}
+                            isLeftIcon={false}
+
                         />
 
                         {
@@ -302,14 +323,14 @@ const Investment = ({ navigation, route }) => {
                                         token: linkToken,
                                     }}
                                     onSuccess={(success: LinkSuccess) => {
-                                        console.log(JSON.parse(success.metadata.metadataJson))
+                                        console.log("Plaid success....", JSON.parse(success.metadata.metadataJson))
                                         callAPIforAccessToken(JSON.parse(success?.metadata?.metadataJson))
                                     }}
                                     onExit={(exit: LinkExit) => { console.log({ exit }) }}
                                 >
                                     <View
                                         style={[styles.btnStyle]} >
-                                        <Text style={[styles.label]}>{'INVEST NOW'}</Text>
+                                        <Text style={[styles.label]}>{'Connect Plaid'}</Text>
                                     </View>
                                 </PlaidLink>
                                 :

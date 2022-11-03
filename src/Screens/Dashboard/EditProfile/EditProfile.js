@@ -81,7 +81,7 @@ const EditProfile = ({ navigation }) => {
     return (
         <View style={styles.mainContainer}>
             <KeyboardAwareScrollView
-                keyboardShouldPersistTaps='always'
+                keyboardShouldPersistTaps='handled'
                 showsVerticalScrollIndicator={false}
             >
 
@@ -90,22 +90,22 @@ const EditProfile = ({ navigation }) => {
                         style={styles.profileImg}
                         source={{ uri: loggedInUserDetails?.profile_photo_url }}
                     />
-                    <View style={styles.addIconContainer}>
+                    {/* <View style={styles.addIconContainer}>
                         <Image
                             style={styles.addIcon}
                             source={Images.Add}
                         />
-                    </View>
+                    </View> */}
                 </View>
 
                 <View style={styles.fieldContainer}>
                     <InputField
                         onChangeText={val => setName(val)}
                         value={name}
-                        returnKeyType={'done'}
+                        returnKeyType={'next'}
                         fieldRef={nameRef}
                         onSubmitEditing={() => {
-                            numberRef?.current?.focus()
+                            numberRef.current.focus()
                         }}
                         placeholder='Name'
                     />
@@ -113,10 +113,7 @@ const EditProfile = ({ navigation }) => {
                     <InputField
                         onChangeText={val => setEmail(val)}
                         value={email}
-                        returnKeyType={'next'}
-                        onSubmitEditing={() => {
-                            Keyboard.dismiss()
-                        }}
+                        returnKeyType={'done'}
                         editable={false}
                         placeholder='Email'
                         customStyle={{
@@ -126,16 +123,16 @@ const EditProfile = ({ navigation }) => {
 
                     <View style={styles.phoneNumberContainer}>
                         <View
-                            style={styles.codeContainer}>
+                            style={[styles.codeContainer,{ width: (code.length>2 && code.length<4)? '23%': code.length>3 ?'26%' :'20%',}]}>
                             <CountryPickerModal
                                 callingCode={(code) => {
                                     setCode(code)
                                 }}
                                 visible={isCountryModal}
                             />
-                            <Text style={styles.countryCode}>{`${code}`}</Text>
+                            <Text style={styles.countryCode}>{`+${code}`}</Text>
                         </View>
-                        <View style={styles.numberContainer}>
+                        <View style={[styles.numberContainer,{width: (code.length>2 && code.length<4)? '77%':  code.length>3 ? '74%':'80%',}]}>
                             <TextInput
                                 style={{ fontSize: 14, fontFamily: Fonts.Light, color: colors.White }}
                                 ref={numberRef}
@@ -143,7 +140,6 @@ const EditProfile = ({ navigation }) => {
                                 onChangeText={(val) => setNumber(val)}
                                 value={number}
                                 keyboardType={'number-pad'}
-                                maxLength={10}
                                 placeholderTextColor={'rgba(255,255,255,0.2)'}
                                 returnKeyType={'next'}
                                 onSubmitEditing={() => {

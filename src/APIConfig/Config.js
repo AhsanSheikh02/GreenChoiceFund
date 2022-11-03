@@ -26,7 +26,9 @@ import {
     CREATE_LINK_TOKEN,
     SET_ACCESS_TOKEN,
     USER_ACCOUNTS,
-    USER_INVESTMENTS
+    USER_INVESTMENTS,
+    DELETE_ACCOUNT,
+    INVEST
 } from './Constants'
 
 
@@ -55,7 +57,7 @@ export const SocialLogin = async (access_token, provider, device_token, device_i
             user_info
         }
 
-        console.log('.......request object.....', data);
+        // console.log('.......request object.....', data);
         let res = await fetch.post(SOCIAL_LOGIN, data, requestName)
         return res
     } catch (error) {
@@ -123,6 +125,21 @@ export const LogoutUser = async (push_notification_id, device_token, device_id) 
     }
 };
 
+// Handle DeleteAccount
+export const DeleteAccount = async (password) => {
+    let requestName = 'DeleteAccount'
+    try {
+        let data =
+        {
+            password
+        }
+        let res = await fetch.post(DELETE_ACCOUNT, data, requestName)
+        return res
+    } catch (error) {
+        throw error;
+    }
+};
+
 // Handle Fofgot Password
 export const ForgotPass = async (email) => {
     let requestName = 'FogotPass'
@@ -177,7 +194,7 @@ export const UpdateProfile = async (name, country_code, contact_no, user_type_id
             country_code,
             contact_no,
             user_type_id,
-            privacy_policy_version: 2.0
+            privacy_policy_version: '2.0'
         }
         let res = await fetch.post(UPDATE_PROFILE, data, requestName)
         return res
@@ -211,11 +228,11 @@ export const SubCategoryList = async (catId) => {
 };
 
 // Handle SolutionList
-export const SolutionList = async (subCatId) => {
+export const SolutionList = async (catId) => {
     let requestName = 'SolutionList'
     try {
         let data = {}
-        let res = await fetch.get(`${SOLUTION_LIST}${subCatId}`, data, requestName)
+        let res = await fetch.get(`${SOLUTION_LIST}${catId}`, data, requestName)
         return res
     } catch (error) {
         throw error;
@@ -376,7 +393,7 @@ export const UserAccounts = async (access_token) => {
 };
 
 // Handle Investment
-export const Investment = async (name, email, country_code, contact_no, address, dob, investment_amount, solution_ids, account_id, access_token) => {
+export const Investment = async (name, email, country_code, contact_no, address, dob, investment_amount, account_id, access_token) => {
     let requestName = 'Investment'
     let data = {
         name,
@@ -386,12 +403,11 @@ export const Investment = async (name, email, country_code, contact_no, address,
         address,
         dob,
         investment_amount,
-        solution_ids,
         account_id,
         access_token
     }
     try {
-        let res = await fetch.post(USER_ACCOUNTS, data, requestName)
+        let res = await fetch.post(INVEST, data, requestName)
         return res
     } catch (error) {
         throw error;

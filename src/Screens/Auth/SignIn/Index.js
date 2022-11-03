@@ -25,7 +25,7 @@ import AppButton from '../../../Components/AppBtn'
 import InputField from '../../../Components/InputField'
 import colors from '../../../Assets/Colors/Index';
 import SocialButton from '../../../Components/SocialBtn';
-import { LoginUser } from '../../../APIConfig/Config';
+import { LoginUser, SocialLogin } from '../../../APIConfig/Config';
 import { Guest, userToken, UserType, userDetail } from '../../../Redux/Actions/Auth';
 
 const SignIn = ({ navigation, route }) => {
@@ -51,12 +51,12 @@ const SignIn = ({ navigation, route }) => {
 
 
     const googleSignUp = async () => {
-        // Toast.showLoading("Please wait..")
+        Toast.showLoading("Please wait..")
         try {
             const { idToken } = await GoogleSignin.signIn();
             const googleCredential = auth.GoogleAuthProvider.credential(idToken);
             const credentials = await auth().signInWithCredential(googleCredential);
-            console.log(googleCredential?.token);
+            // console.log(googleCredential?.token);
             // console.log({ idToken });
             // console.log('main credential object...', credentials);
             // console.log('additional user-info...', credentials?.additionalUserInfo?.profile);
@@ -70,21 +70,20 @@ const SignIn = ({ navigation, route }) => {
                 family_name: credentials?.additionalUserInfo?.profile?.family_name,
                 given_name: credentials?.additionalUserInfo?.profile?.given_name,
                 phoneNumber: credentials?.user?.phoneNumber,
-                provider_data_uid: null,
+                provider_data_uid: credentials?.user?.providerData[0]?.providerId,
                 uid: credentials?.user?.uid
 
             }
-            // callAPIforSocialLogin(googleCredential?.token, user_info)
-            setTimeout(() => {
-                navigation.navigate('PersonalDetails', { userData: user_info })
-            }, 350);
+            // console.log({user_info});
+            callAPIforSocialLogin(googleCredential?.token, 'google', user_info)
 
         } catch (error) {
             console.log("googleSignIn-error", error);
         }
     };
 
-    const onAppleButtonPress = async () => {
+    async function onAppleButtonPress() {
+        Toast.showLoading("Please wait..")
         // Start the sign-in request
         const appleAuthRequestResponse = await appleAuth.performRequest({
             requestedOperation: appleAuth.Operation.LOGIN,
@@ -99,21 +98,23 @@ const SignIn = ({ navigation, route }) => {
         // Create a Firebase credential from the response
         const { identityToken, nonce } = appleAuthRequestResponse;
         const appleCredential = auth.AppleAuthProvider.credential(identityToken, nonce);
-        console.log(appleAuthRequestResponse);
-        console.log(appleCredential);
-        // Sign the user in with the credential
+        // console.log(appleAuthRequestResponse);
+        // console.log(appleCredential);
+        callAPIforSocialLogin(appleAuthRequestResponse?.identityToken, 'apple')
         return auth().signInWithCredential(appleCredential);
-        // console.log(signIn);
+
     }
 
     const callAPIforLogin = () => {
         let platformId = Platform.OS === 'ios' ? 2 : 1
         if (email === '') {
-            TostMsg('Email required')
+            TostMsg('Email is required')
         } else if (EMAIL_REG.test(email) == false) {
-            TostMsg('Invalid Email')
+            TostMsg('Email is invalid')
         } else if (password === '') {
-            TostMsg('Password required')
+            TostMsg('Password is required')
+        } else if (password.length < 8) {
+            TostMsg('Password should be min 8 characters')
         } else {
             Toast.showLoading("Please wait..")
             // console.log(name, email, password, confirmPass, deviceToken, deviceId, platformId);
@@ -129,9 +130,16 @@ const SignIn = ({ navigation, route }) => {
                     AsyncStorage.setItem("authToken", res?.data?.token)
                     setTimeout(() => {
                         if (res?.data?.user?.user_type_id === '1') {
-                            navigation.navigate('HomeStack')
+                            setTimeout(() => {
+                                navigation.reset({
+                                    index: 0,
+                                    routes: [{ name: 'HomeStack' }],
+                                })
+                            }, 250);
                         } else {
-                            navigation.navigate('OnBoarding')
+                            setTimeout(() => {
+                                navigation.replace('OnBoarding')
+                            }, 250);
                         }
                     }, 250);
 
@@ -146,11 +154,48 @@ const SignIn = ({ navigation, route }) => {
 
     }
 
+    const callAPIforSocialLogin = (token, provider, userObject) => {
+        let platformId = Platform.OS === 'ios' ? 2 : 1
+
+        SocialLogin(token, provider, deviceToken, deviceId, platformId, userObject)
+            .then((res) => {
+                // console.log("callAPIforSocialLogin-res...", res);
+                Toast.hide()
+                if (res.code === 200) {
+                    dispatch(userToken(res?.data?.token))
+                    dispatch(userDetail(res?.data?.user))
+                    dispatch(UserType(null))
+                    AsyncStorage.setItem("authToken", res?.data?.token)
+                    setTimeout(() => {
+                        navigation.navigate('PersonalDetails',
+                            {
+                                userData: res?.data?.user,
+                                allowEmail: provider === 'apple' ? true : false
+                            })
+                    }, 500);
+                }
+
+                // TostMsg('Account registered')
+                // dispatch(userToken(res?.data?.token))
+                // AsyncStorage.setItem("authToken", res?.data?.token)
+                // setTimeout(() => {
+                //     navigation.reset({
+                //         index: 0,
+                //         routes: [{ name: 'HomeStack' }],
+                //     })
+                // }, 250);
+            }).catch((err) => {
+                Toast.hide()
+                // TostMsg(err)
+                console.log("callAPIforSocialLogin-err", err);
+            })
+    }
+
     return (
         <SafeAreaView style={styles.mainContainer}>
 
             <KeyboardAwareScrollView
-                keyboardShouldPersistTaps='always'
+                keyboardShouldPersistTaps='handled'
                 contentContainerStyle={styles.scrollView}
                 showsVerticalScrollIndicator={false} >
                 <Image
@@ -186,6 +231,7 @@ const SignIn = ({ navigation, route }) => {
                     customStyle={{
                         marginTop: 37
                     }}
+                    autoCapitalize={'none'}
                 />
 
                 <InputField

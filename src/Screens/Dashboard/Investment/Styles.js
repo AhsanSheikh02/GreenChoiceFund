@@ -14,9 +14,8 @@ const styles = StyleSheet.create({
         paddingBottom: '10%',
     },
     scrollView: {
-        flexGrow: 1,
         justifyContent: 'center',
-        paddingHorizontal: 26,
+        paddingHorizontal: 16,
         paddingVertical: 75,
     },
     detailContainer: {
@@ -88,8 +87,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     numberContainer: {
-        width: '78%',
-        // paddingLeft:5,
+        paddingLeft:5,
         justifyContent: 'center'
     },
     countryCode: {
@@ -115,6 +113,7 @@ const styles = StyleSheet.create({
         width: '85%',
         backgroundColor: colors.textInput,
         paddingHorizontal: 8,
+        justifyContent:'center'
     },
     IconContainer: {
         height: '100%',

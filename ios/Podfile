@@ -21,6 +21,7 @@ target 'GreenChoiceFund' do
   )
 
   pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
+  pod 'react-native-plaid-link-sdk', :path => '../node_modules/react-native-plaid-link-sdk'
 
   target 'GreenChoiceFundTests' do
     inherit! :complete

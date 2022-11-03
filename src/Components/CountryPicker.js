@@ -7,7 +7,7 @@ const CountryPickerModal = (props) => {
 
     const { visible, callingCode=()=>{} } = props
 
-    const [countryCode, setCountryCode] = useState('PK')
+    const [countryCode, setCountryCode] = useState('US')
     const [country, setCountry] = useState(null)
     const [withCountryNameButton, setWithCountryNameButton] = useState(false)
     const [withFlag, setWithFlag] = useState(true)

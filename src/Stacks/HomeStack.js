@@ -93,9 +93,15 @@ const TabStack = ({ navigation }) => {
                             style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
                             onPress={() => {
                                 if (guest) {
-                                    navigation.navigate("SignIn")
+                                    navigation.reset({
+                                        index: 0,
+                                        routes: [{ name: 'SignIn' }],
+                                    })
                                 } else {
-                                    navigation.navigate("Portfolio")
+                                    navigation.reset({
+                                        index: 0,
+                                        routes: [{ name: 'Portfolio' }],
+                                    })
                                 }
                             }}>
                             <Image
@@ -111,7 +117,12 @@ const TabStack = ({ navigation }) => {
                         </Pressable>
 
                         <Pressable
-                            onPress={() => { navigation.navigate("HomeStackScreens") }}
+                            onPress={() => {
+                                navigation.reset({
+                                    index: 0,
+                                    routes: [{ name: 'HomeStackScreens' }],
+                                })
+                            }}
                             style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
 
                             <Image
@@ -131,7 +142,10 @@ const TabStack = ({ navigation }) => {
                             <Pressable
                                 style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
                                 onPress={() => {
-                                    navigation.navigate("Cart")
+                                    navigation.reset({
+                                        index: 0,
+                                        routes: [{ name: 'Cart' }],
+                                    })
                                 }}>
                                 {
                                     noOfCartItems > 0 &&
@@ -158,7 +172,12 @@ const TabStack = ({ navigation }) => {
                         }
 
                         <Pressable
-                            onPress={() => { navigation.navigate("Settings") }}
+                            onPress={() => { 
+                                navigation.reset({
+                                    index: 0,
+                                    routes: [{ name: 'Settings' }],
+                                })
+                             }}
                             style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
 
                             <Image
@@ -167,10 +186,10 @@ const TabStack = ({ navigation }) => {
                                 style={{
                                     width: 21,
                                     height: 21,
-                                    tintColor: state.index === loggedInUserType === '1' ? 2 : 3 ? colors.Secondary : '#454d6c'
+                                    tintColor: state.index === (loggedInUserType === '1' ? 3 : 2) ? colors.Secondary : '#454d6c'
                                 }}
                             />
-                            <Text style={[styles.tabTitle, { color: state.index === loggedInUserType === '1' ? 2 : 3 ? colors.Secondary : '#454d6c' }]}>{'Settings'}</Text>
+                            <Text style={[styles.tabTitle, { color: state.index === (loggedInUserType === '1' ? 3 : 2) ? colors.Secondary : '#454d6c' }]}>{'Settings'}</Text>
                         </Pressable>
 
                     </View>

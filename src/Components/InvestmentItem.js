@@ -59,7 +59,7 @@ const InvestmentItem = (props) => {
             <View style={{ flex: 0.3, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                 <Text style={styles.desc}>{moment(Item?.created_at).format('DD-MM-YYYY')}</Text>
                 <View style={{ backgroundColor: Item?.back_color, height: '80%', width: '30%', borderRadius: 5, justifyContent: 'center', alignItems: 'center' }}>
-                    <Text style={styles.status}>{Item?.investment_status}</Text>
+                    <Text style={[styles.status,{color:Item?.text_color}]}>{Item?.investment_status}</Text>
                 </View>
             </View>
         </TouchableOpacity>

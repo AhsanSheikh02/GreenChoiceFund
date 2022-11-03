@@ -79,9 +79,9 @@ const Home = ({ navigation }) => {
     useEffect(() => {
         if (!guest) {
             callAPIforUserDetail()
+            callAPIforCartCount()
         }
         callAPIforCategoryList()
-        callAPIforCartCount()
     }, [])
 
     return (

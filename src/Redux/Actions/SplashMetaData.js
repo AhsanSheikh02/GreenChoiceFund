@@ -1,4 +1,4 @@
-import { USER_TYPE, CONTACT_REASONS, SELECTED_IMAGE, INFOGRAPHICS, } from '../Types/Index'
+import { USER_TYPE, CONTACT_REASONS, SELECTED_IMAGE, INFOGRAPHICS,INFO_URLS } from '../Types/Index'
 
 
 const UserTypes = (payload) => ({
@@ -20,5 +20,10 @@ const SelectedImage = (payload) => ({
     payload
 })
 
+const InfoUrls = (payload) => ({
+    type: INFO_URLS,
+    payload
+})
 
-export { UserTypes, ContactUsReasons, SelectedImage, Infographic }
+
+export { UserTypes, ContactUsReasons, SelectedImage, Infographic,InfoUrls }

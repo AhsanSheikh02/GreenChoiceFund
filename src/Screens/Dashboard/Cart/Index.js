@@ -21,6 +21,7 @@ import colors from '../../../Assets/Colors/Index'
 import { userDetail } from '../../../Redux/Actions/Auth'
 import CartItem from '../../../Components/CartItem'
 import AppButton from '../../../Components/AppBtn'
+import { useIsFocused } from '@react-navigation/native'
 
 
 const Cart = ({ navigation }) => {
@@ -32,10 +33,12 @@ const Cart = ({ navigation }) => {
     const [isLoading, setIsLoading] = useState(true)
     const [isRefresh, setIsRefresh] = useState(false)
     const dispatch = useDispatch()
+    const isFocused = useIsFocused()
+
 
     useEffect(() => {
         callAPIforCartList()
-    }, [])
+    }, [isFocused])
 
     const callAPIforCartList = () => {
         CartList().then((res) => {

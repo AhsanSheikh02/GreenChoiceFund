@@ -15,7 +15,7 @@ import Images from '../../Assets/Images/Index'
 import { Guest } from '../../Redux/Actions/Auth'
 import { SplashMetaData } from '../../APIConfig/Config'
 import { DeviceToken, DeviceId } from '../../Redux/Actions/DeviceInfo';
-import { ContactUsReasons, Infographic, UserTypes } from '../../Redux/Actions/SplashMetaData'
+import { ContactUsReasons, Infographic, InfoUrls, UserTypes } from '../../Redux/Actions/SplashMetaData'
 
 const Splash = ({ navigation }) => {
 
@@ -38,6 +38,7 @@ const Splash = ({ navigation }) => {
                 })
             }
             dispatch(UserTypes(typeTempArray))
+            dispatch(InfoUrls(res.data.infoUrl))
             dispatch(ContactUsReasons(reasonTempArray))
             dispatch(Infographic(res?.data?.infographic))
         }).catch((err) => {
@@ -47,7 +48,7 @@ const Splash = ({ navigation }) => {
     }
 
     const getDeviceId = async () => {
-        let Id = await DeviceInfo.getDeviceId()
+        let Id = DeviceInfo.getDeviceId()
         dispatch(DeviceId(Id))
         console.log("getDeviceId", Id);
     }
@@ -81,20 +82,27 @@ const Splash = ({ navigation }) => {
         });
 
         if (authToken) {
-            console.log('.......................',loggedInUserType);
-            if (loggedInUserType === '1') {
+            console.log('.......................', loggedInUserType);
+            if (loggedInUserType == null) {
                 setTimeout(() => {
-                    navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'HomeStack' }],
-                    })
+                    navigation.navigate('PersonalDetails')
                 }, 3500);
+            } else {
+                if (loggedInUserType === '1') {
+                    setTimeout(() => {
+                        navigation.reset({
+                            index: 0,
+                            routes: [{ name: 'HomeStack' }],
+                        })
+                    }, 3500);
+                }
+                else {
+                    setTimeout(() => {
+                        navigation.replace('OnBoarding')
+                    }, 3500);
+                }
             }
-            else {
-                setTimeout(() => {
-                    navigation.replace('OnBoarding')
-                }, 3500);
-            }
+
         } else {
             setTimeout(() => {
                 navigation.reset({

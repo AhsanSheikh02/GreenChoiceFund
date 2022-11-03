@@ -42,9 +42,13 @@ const ChangePassword = ({ navigation }) => {
 
     const callAPIforUpdatePass = () => {
         if (oldPassword === '') {
-            TostMsg('Old password required')
+            TostMsg('Old password is required')
+        } else if (oldPassword.length < 8) {
+            TostMsg('Password should be min 8 characters')
         } else if (newPassword === '') {
-            TostMsg('New pass required')
+            TostMsg('New password is required')
+        } else if (newPassword.length < 8) {
+            TostMsg('Password should be min 8 characters')
         } else if (confirmNewpassword === '') {
             TostMsg('Confirm password required')
         } else if (newPassword != confirmNewpassword) {

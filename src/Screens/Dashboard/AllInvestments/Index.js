@@ -80,10 +80,11 @@ const AllInvestments = ({ navigation, route }) => {
 
     const onRefresh = () => {
         setIsRefresh(true);
-        callAPIforAccounts();
+        callAPIforRecentInvestments();
     };
 
     const renderItem = ({ item, index }) => {
+        console.log(item);
         return (
             <InvestmentItem
                 Item={item}
@@ -108,7 +109,7 @@ const AllInvestments = ({ navigation, route }) => {
                             data={investmentsList}
                             extraData={investmentsList}
                             showsVerticalScrollIndicator={false}
-                            keyExtractor={item => item?.id}
+                            keyExtractor={(item,index) => `investment ${index}`}
                             renderItem={(item) => renderItem(item)}
                             contentContainerStyle={{ flexGrow: 1, paddingTop: 15, justifyContent: investmentsList.length > 0 ? 'flex-start' : 'center' }}
                             ListEmptyComponent={() => {

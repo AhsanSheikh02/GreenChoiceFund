@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
         borderColor: colors.Secondary,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 80,
+        marginTop: 50,
         alignSelf: 'center'
     },
     profileImg: {
@@ -125,13 +125,12 @@ const styles = StyleSheet.create({
         marginTop: 12
     },
     codeContainer: {
-        width: '20%',
         flexDirection:'row',
         justifyContent: 'center',
         alignItems: 'center'
     },
     numberContainer: {
-        width: '80%',
+        paddingLeft:5,
         justifyContent: 'center'
     },
     countryCode: {

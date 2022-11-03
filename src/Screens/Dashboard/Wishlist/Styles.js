@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
     innerContainer: {
         flex: 1,
         paddingHorizontal: 16,
+        paddingTop:'5%',
         paddingBottom: '25%'
     },
     emptyListTitle: {
@@ -42,17 +43,31 @@ const styles = StyleSheet.create({
         tintColor: colors.White,
     },
     infoContainer: {
-        height: 30,
-        width: 30,
-        tintColor: colors.White,
-        top: 15,
-        right: 15,
-        position: 'absolute',
-        zIndex: 9999,
-        justifyContent:'center',
-        alignItems:'center'
-    }
-
+        width: '100%',
+        flexDirection: 'row',
+        borderRadius: 15,
+        paddingHorizontal: 12,
+        paddingVertical: 12,
+        backgroundColor: colors.SecondaryTwo,
+    },
+    infoImg: {
+        height: 76,
+        width: 76,
+        borderRadius: 15,
+        backgroundColor: colors.Placeholder,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    fallbackImg: {
+        height: '60%',
+        width: '60%',
+    },
+    title: {
+        fontSize: 19,
+        fontFamily: Fonts.Regular,
+        fontWeight: '600',
+        color: colors.White
+    },
 
 })
 

@@ -8,10 +8,12 @@ import {
     Alert,
     Platform,
     ScrollView,
+    Linking,
 
 } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import messaging from '@react-native-firebase/messaging'
 import styles from './Styles'
 import Header from '../../../Components/Header'
 import ProfileSettingComponent from '../../../Components/ProfileSettingComponent'
@@ -20,17 +22,33 @@ import { LogoutUser } from '../../../APIConfig/Config'
 import { onLogout, UserType } from '../../../Redux/Actions/Auth'
 import AppButton from '../../../Components/AppBtn'
 import colors from '../../../Assets/Colors/Index';
+import DeleteAccountAlert from '../../../Components/DeleteAccountAlert';
+import Toast from 'react-native-tiny-toast';
+import { DeviceToken } from '../../../Redux/Actions/DeviceInfo';
 
 const Settings = ({ navigation }) => {
 
     const { deviceToken, deviceId } = useSelector(state => state.DeviceInfo)
     const { guest, authToken, loggedInUserDetails, loggedInUserType } = useSelector(state => state.Auth)
+    const { infoUrls } = useSelector(state => state.Splash)
     const [isLoading, setIsLoading] = useState(false)
+    const [isVisible, setIsVisible] = useState(false)
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        console.log(infoUrls);
+    }, [])
 
     const removeGoogleAuth = async () => {
         try {
             await GoogleSignin.signOut();
+            try {
+                const fcmtoken = await messaging().deleteToken()
+                dispatch(DeviceToken(null))
+            } catch (error) {
+                console.log("deleteFcm-error", error);
+            }
+
         } catch (error) {
             console.error("removeGoogleAuth-error", error);
         }
@@ -58,13 +76,35 @@ const Settings = ({ navigation }) => {
         )
     }
 
+    const showDeleteDialog = () => {
+        Alert.alert(
+            "Delete Account",
+            'Are you sure you want to delete your account?',
+            [
+                {
+                    text: 'NO',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                {
+                    text: 'YES',
+                    onPress: () => {
+                        setIsVisible(true)
+                    },
+                },
+            ],
+            { cancelable: false },
+        )
+    }
+
     const callAPIforLogout = () => {
+        Toast.showLoading("Please wait..")
         let platformId = Platform.OS === 'ios' ? 2 : 1
         // console.log(name, email, password, confirmPass, deviceToken, deviceId, platformId);
         // return false
         LogoutUser(platformId, deviceToken, deviceId)
             .then((res) => {
-                // TostMsg('Account registered')
+                Toast.hide()
                 removeGoogleAuth()
                 setTimeout(() => {
                     dispatch(onLogout())
@@ -75,6 +115,7 @@ const Settings = ({ navigation }) => {
                     routes: [{ name: 'SignIn' }],
                 })
             }).catch((err) => {
+                Toast.hide()
                 dispatch(onLogout())
                 setTimeout(() => {
                     navigation.reset({
@@ -152,14 +193,23 @@ const Settings = ({ navigation }) => {
                         }
 
                         {
-                            (!guest && loggedInUserType === '1') &&
-                            <ProfileSettingComponent
-                                Icon={Images.Money}
-                                Title={'Recent Investments'}
-                                IconStyle={{ tintColor: 'rgba(255,255,255,0.4)' }}
-                                onPress={() => navigation.navigate('AllInvestments')}
-                                containerStyle={{ marginTop: 15 }}
-                            />
+                            (!guest && loggedInUserType === '1') ?
+                                <ProfileSettingComponent
+                                    Icon={Images.Money}
+                                    Title={'Recent Investments'}
+                                    IconStyle={{ tintColor: 'rgba(255,255,255,0.4)' }}
+                                    onPress={() => navigation.navigate('AllInvestments')}
+                                    containerStyle={{ marginTop: 15 }}
+                                />
+                                :
+                                <ProfileSettingComponent
+                                    Icon={Images.Inquiry}
+                                    Title={'Inquiry'}
+                                    IconStyle={{ tintColor: 'rgba(255,255,255,0.4)' }}
+                                    onPress={() => navigation.navigate('Inquiry')}
+                                    containerStyle={{ marginTop: 15 }}
+                                />
+
 
                         }
 
@@ -167,26 +217,34 @@ const Settings = ({ navigation }) => {
                             Icon={Images.FAQ}
                             Title={'FAQ'}
                             containerStyle={{ marginTop: 15 }}
+                            onPress={() => Linking.openURL(infoUrls[2]?.url_web)}
                         />
 
-                        <ProfileSettingComponent
+                        {/* <ProfileSettingComponent
                             Icon={Images.Share}
                             Title={'Share'}
                             containerStyle={{ marginTop: 15 }}
-                        />
+                        /> */}
 
                         <ProfileSettingComponent
                             Icon={Images.About}
                             IconStyle={{ tintColor: 'rgba(255,255,255,0.4)' }}
                             Title={'About Us'}
                             containerStyle={{ marginTop: 15 }}
+                            onPress={() => Linking.openURL(infoUrls[3]?.url_web)}
                         />
 
-                        <ProfileSettingComponent
-                            Icon={Images.Recommended}
-                            Title={'Recommended'}
-                            containerStyle={{ marginTop: 15 }}
-                        />
+                        {
+                            !guest &&
+                            <ProfileSettingComponent
+                                Icon={Images.Delete}
+                                Title={'Delete Account'}
+                                TitleStyle={{ color: 'red' }}
+                                IconStyle={{ tintColor: 'red' }}
+                                containerStyle={{ marginTop: 15 }}
+                                onPress={() => showDeleteDialog()}
+                            />
+                        }
 
                         {
                             !guest &&
@@ -207,6 +265,12 @@ const Settings = ({ navigation }) => {
 
                 </ScrollView>
             </View>
+
+            <DeleteAccountAlert
+                visible={isVisible}
+                onRequestClose={() => setIsVisible(false)}
+                navigation={navigation}
+            />
 
         </SafeAreaView >
     )

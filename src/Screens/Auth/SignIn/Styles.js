@@ -10,9 +10,8 @@ const styles = StyleSheet.create({
         backgroundColor: colors.Primary,
     },
     scrollView: {
-        flexGrow: 1,
         justifyContent: 'center',
-        paddingHorizontal: 26,
+        paddingHorizontal: 16,
         paddingVertical: 75,
     },
     btnStyle: {
