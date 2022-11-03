@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, Image, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, Image, View, ActivityIndicator } from 'react-native'
 //import LinearGradient from 'react-native-linear-gradient';
 
 
@@ -8,7 +8,7 @@ import Loader from './Loader'
 
 const AppButton = (props) => {
 
-    const { style, onPress, labelStyle, label, icon, disable } = props
+    const { style, onPress, labelStyle, label, icon, disable,isLoading } = props
     return (
 
         <TouchableOpacity
@@ -20,7 +20,12 @@ const AppButton = (props) => {
                 icon &&
                 <Image source={icon} style={styles.btnImage} />
             }
-            <Text style={[styles.btnText, labelStyle]}>{label}</Text>
+            {
+                isLoading ?
+                    <ActivityIndicator size={'small'} color={colors.Black} />
+                    :
+                    <Text style={[styles.btnText, labelStyle]}>{label}</Text>
+            }
         </TouchableOpacity>
 
     )

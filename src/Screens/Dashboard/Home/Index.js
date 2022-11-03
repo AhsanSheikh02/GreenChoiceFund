@@ -68,7 +68,6 @@ const Home = ({ navigation }) => {
     };
 
     const renderItem = ({ item }) => {
-        console.log('renderItem',item);
         return (
             <CategoryItem
                 Item={item}
@@ -80,9 +79,9 @@ const Home = ({ navigation }) => {
     useEffect(() => {
         if (!guest) {
             callAPIforUserDetail()
+            callAPIforCartCount()
         }
         callAPIforCategoryList()
-        callAPIforCartCount()
     }, [])
 
     return (

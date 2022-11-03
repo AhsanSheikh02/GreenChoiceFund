@@ -10,7 +10,6 @@ const styles = StyleSheet.create({
         backgroundColor: colors.Primary,
     },
     scrollView: {
-        flexGrow: 1,
         justifyContent: 'center',
         paddingHorizontal: 26,
         paddingVertical: 26,
@@ -77,8 +76,7 @@ const styles = StyleSheet.create({
         alignItems:'center'
     },
     numberContainer: {
-        width: '78%',
-        // paddingLeft:5,
+        paddingLeft:5,
         justifyContent:'center'
     },
     countryCode: {

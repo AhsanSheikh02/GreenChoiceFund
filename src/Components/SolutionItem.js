@@ -16,14 +16,93 @@ import colors from '../Assets/Colors/Index'
 import Fonts from '../Assets/Fonts/Index'
 import Images from '../Assets/Images/Index'
 import ImageLoader from './ImageLoader'
+import { AddToCart, CartCount, Favorite, RemoveCart, RemoveFavorite } from '../APIConfig/Config'
+import Toast from 'react-native-tiny-toast'
+import { NoOfCart } from '../Redux/Actions/Cart'
 
 
 
 
 const SolutionItem = (props) => {
 
-    const { Item, navigation } = props
+    const { loggedInUserType } = useSelector(state => state.Auth)
+
+    const { Item, navigation, deleteItem = () => { } } = props
     const [isLoading, setIsLoading] = useState(false)
+    const [isFavorite, setIsFavorite] = useState(false)
+    const [isAddedToCart, setisAddedToCart] = useState(false)
+    const dispatch = useDispatch()
+
+    const TostMsg = (msg) => {
+        Toast.show(msg, {
+            position: Toast.position.center,
+            containerStyle: { backgroundColor: 'rgba(0,0,0,0.4)' },
+            textStyle: { color: colors.White },
+        })
+    }
+
+    useEffect(() => {
+        console.log(Item);
+        Item?.is_wishlisted == true && (setIsFavorite(true))
+        Item?.added_to_cart == true && (setisAddedToCart(true))
+    }, [])
+
+    const callAPIforAddFavorite = () => {
+        setIsFavorite(true)
+        TostMsg('Added to portfolio')
+        Favorite(Item?.id)
+            .then((res) => {
+
+            }).catch((err) => {
+                // TostMsg(err)
+                console.log("callAPIforAddFavorite-err", err);
+            })
+    }
+
+    const callAPIforRemoveFavorite = () => {
+        setIsFavorite(false)
+        TostMsg('Removed from portfolio')
+        RemoveFavorite(Item?.id)
+            .then((res) => {
+
+                deleteItem(Item?.id)
+            }).catch((err) => {
+                TostMsg(err)
+                console.log("callAPIforRemoveFavorite-err", err);
+            })
+    }
+
+    const callAPIforAddToCart = () => {
+        setisAddedToCart(true)
+        TostMsg('Added to Cart')
+        AddToCart(Item?.id)
+            .then((res) => {
+                callAPIforCartCount()
+            }).catch((err) => {
+                TostMsg(err)
+                console.log("callAPIforAddToCart-err", err);
+            })
+    }
+
+    const callAPIforCartCount = () => {
+        CartCount().then((res) => {
+            dispatch(NoOfCart(res?.data?.count))
+        }).catch((err) => {
+            console.log("callAPIforCartCount-err", err);
+        })
+    }
+
+    const callAPIforRemoveCart = () => {
+        setisAddedToCart(false)
+        TostMsg('Removed from Cart')
+        RemoveCart(Item?.id)
+            .then((res) => {
+                callAPIforCartCount()
+            }).catch((err) => {
+                TostMsg(err)
+                console.log("callAPIforRemoveFavorite-err", err);
+            })
+    }
 
     return (
         // <TouchableOpacity
@@ -65,9 +144,38 @@ const SolutionItem = (props) => {
                     }
                 </View>
             </View>
-            <View style={{ flex: 0.75, }}>
+            <View style={{ flex: 0.65, paddingHorizontal: 10 }}>
                 <Text style={styles.title}>{Item?.name}</Text>
                 <Text style={styles.desc}>{Item?.description}</Text>
+            </View>
+
+            <View style={{ flex: 0.15, }}>
+                <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() => {
+                        isFavorite ?
+                            callAPIforRemoveFavorite()
+                            :
+                            callAPIforAddFavorite()
+                    }}
+                    style={{ height: 32, width: '100%', justifyContent: 'center', alignItems: 'center', }}>
+                    <Image source={isFavorite ? Images.Favorite : Images.Non_Favorite} style={styles.icon} resizeMode='contain' />
+                </TouchableOpacity>
+
+                {
+                    loggedInUserType === '1' &&
+                    <TouchableOpacity
+                        onPress={() => {
+                            isAddedToCart ?
+                                callAPIforRemoveCart()
+                                :
+                                callAPIforAddToCart()
+                        }}
+                        activeOpacity={0.8}
+                        style={{ height: 32, width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: loggedInUserType === '1' ? 10 : 0 }}>
+                        <Image source={isAddedToCart ? Images.AddedToCart : Images.AddToCart} style={styles.icon} resizeMode='contain' />
+                    </TouchableOpacity>
+                }
             </View>
         </TouchableOpacity>
     )
@@ -117,4 +225,9 @@ const styles = StyleSheet.create({
         height: '60%',
         width: '60%',
     },
+    icon: {
+        height: 25,
+        width: 25,
+        tintColor: colors.White
+    }
 })

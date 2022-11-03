@@ -23,7 +23,7 @@ import Images from '../../../Assets/Images/Index'
 
 const Solutions = ({ navigation, route }) => {
 
-    const Id = route?.params?.subCatId || ''
+    const {categoryId}  = route?.params || ''
     const { isInternet } = useSelector(state => state.DeviceInfo)
 
     const [solutionList, setSolutionList] = useState([])
@@ -31,11 +31,12 @@ const Solutions = ({ navigation, route }) => {
     const [isRefresh, setIsRefresh] = useState(false)
 
     useEffect(() => {
+        console.log({categoryId});
         callAPIforSolutionsList()
     }, [])
 
     const callAPIforSolutionsList = () => {
-        SolutionList(Id).then((res) => {
+        SolutionList(categoryId).then((res) => {
             // console.log(res?.data?.list[0]);
             setSolutionList(res?.data?.list)
             setIsLoading(false)
@@ -50,6 +51,8 @@ const Solutions = ({ navigation, route }) => {
 
 
     const renderItem = ({ item }) => {
+        // console.log('renderItem', item);
+
         return (
             <SolutionItem
                 Item={item}

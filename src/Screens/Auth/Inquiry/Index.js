@@ -27,7 +27,7 @@ import CountryPickerModal from '../../../Components/CountryPicker';
 
 
 
-const Inquiry = ({navigation}) => {
+const Inquiry = ({ navigation }) => {
 
     const EMAIL_REG = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
     const { contactReasons } = useSelector(state => state.Splash)
@@ -43,7 +43,7 @@ const Inquiry = ({navigation}) => {
 
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
-    const [code, setCode] = useState('92')
+    const [code, setCode] = useState('1')
     const [number, setNumber] = useState('')
     const [address, setAddress] = useState('')
     const [url, setUrl] = useState('')
@@ -64,19 +64,19 @@ const Inquiry = ({navigation}) => {
     const callAPIforInquiry = () => {
         console.log('in fn');
         if (name === '') {
-            TostMsg('Name required')
+            TostMsg('Name is required')
         } else if (email === '') {
-            TostMsg('Email required')
+            TostMsg('Email is required')
         } else if (EMAIL_REG.test(email) == false) {
-            TostMsg('Invalid Email')
+            TostMsg('Email is invalid')
         } else if (number === '') {
-            TostMsg('Number required')
+            TostMsg('Phone No is required')
         } else if (address === '') {
-            TostMsg('Address required')
-        } else if (url === '') {
-            TostMsg('URL required')
+            TostMsg('Address is required')
+        } else if (desc === '') {
+            TostMsg('Description is required')
         } else if (reason === '') {
-            TostMsg(`Give your reason`)
+            TostMsg(`Reason is required`)
         } else {
             Toast.showLoading("Please wait..")
             SendInquiry(name, email, code, number, address, url, desc, reason)
@@ -104,7 +104,7 @@ const Inquiry = ({navigation}) => {
         <SafeAreaView style={styles.mainContainer}>
 
             <KeyboardAwareScrollView
-                keyboardShouldPersistTaps='always'
+                keyboardShouldPersistTaps='handled'
                 contentContainerStyle={styles.scrollView}
                 showsVerticalScrollIndicator={false} >
                 <Image
@@ -162,7 +162,6 @@ const Inquiry = ({navigation}) => {
                             onChangeText={(val) => setNumber(val)}
                             value={number}
                             keyboardType={'number-pad'}
-                            maxLength={10}
                             placeholderTextColor={'rgba(255,255,255,0.2)'}
                             returnKeyType={'next'}
                             onSubmitEditing={() => {

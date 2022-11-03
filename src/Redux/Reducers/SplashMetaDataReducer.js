@@ -1,10 +1,11 @@
-import { USER_TYPE, CONTACT_REASONS, SELECTED_IMAGE, INFOGRAPHICS } from '../Types/Index';
+import { USER_TYPE, CONTACT_REASONS, SELECTED_IMAGE, INFOGRAPHICS, INFO_URLS } from '../Types/Index';
 
 const initialState = {
     userTypes: null,
     contactReasons: null,
     selectedImage: null,
     infographic: null,
+    infoUrls: null
 
 };
 
@@ -29,6 +30,11 @@ const SplashDataReducer = (state = initialState, action = {}) => {
             return {
                 ...state,
                 infographic: action.payload,
+            };
+        case INFO_URLS:
+            return {
+                ...state,
+                infoUrls: action.payload,
             };
         default:
             return state;

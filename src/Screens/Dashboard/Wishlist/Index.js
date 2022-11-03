@@ -16,20 +16,23 @@ import { useDispatch, useSelector } from 'react-redux'
 import styles from './Styles'
 import Images from '../../../Assets/Images/Index'
 import Header from '../../../Components/Header'
-import WishlistItem from '../../../Components/SubCategoryItem'
+import WishlistItem from '../../../Components/SolutionItem'
 import colors from '../../../Assets/Colors/Index'
 import { UserDetail, WishList } from '../../../APIConfig/Config'
 import AppButton from '../../../Components/AppBtn'
 import FullImage from '../../../Components/FullImage'
+import ImageLoader from '../../../Components/ImageLoader'
 
 
 const Wishlist = ({ navigation }) => {
 
     const { guest } = useSelector(state => state.Auth)
+    const { infographic } = useSelector(state => state.Splash);
 
     const [favoriteList, setFavoriteList] = useState([])
     const [fullImageVisible, setFullImageVisible] = useState(false)
     const [isLoading, setIsLoading] = useState(guest === true ? false : true)
+    const [imageLoading, setImageLoading] = useState(false)
     const [isRefresh, setIsRefresh] = useState(false)
 
 
@@ -53,6 +56,7 @@ const Wishlist = ({ navigation }) => {
         return (
             <WishlistItem
                 Item={item}
+                navigation={navigation}
                 deleteItem={(id) => {
                     setFavoriteList(favoriteList.filter((item) => {
                         return item.id != id
@@ -77,19 +81,50 @@ const Wishlist = ({ navigation }) => {
             />
 
             <View style={styles.innerContainer}>
-                <View style={styles.infoContainer}>
-                    <TouchableOpacity
-                        activeOpacity={0.6}
-                        onPress={() => setFullImageVisible(true)}
-                    ><Image source={Images.About} style={styles.infoIcon} resizeMode='contain' />
-                    </TouchableOpacity>
-                </View>
+
+                <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() => setFullImageVisible(true)}
+                    style={styles.infoContainer}>
+                    <View style={{ flex: 0.25, }}>
+                        <View style={styles.infoImg}>
+
+                            {
+                                infographic ?
+                                    <>
+                                        <ImageLoader isLoading={isLoading} />
+                                        <Image
+                                            onLoadStart={() => {
+                                                setImageLoading(true)
+                                            }}
+                                            // onLoad={() => {
+                                            //     setIsLoading(false)
+                                            // }}
+                                            onError={(error) => console.log(error)}
+                                            onLoadEnd={() => {
+                                                setImageLoading(false)
+
+                                            }}
+                                            source={{ uri: infographic }} style={styles.solutionImg} />
+
+                                    </>
+                                    :
+                                    <Image source={Images.Fallback} style={styles.fallbackImg} resizeMode='contain' />
+                            }
+                        </View>
+                    </View>
+                    <View style={{ flex: 0.75, paddingHorizontal: 10, justifyContent: 'center' }}>
+                        <Text style={styles.title}>{'Infographics'}</Text>
+                    </View>
+                </TouchableOpacity>
+
                 <FlatList
                     data={favoriteList}
                     showsVerticalScrollIndicator={false}
                     keyExtractor={item => item.id}
                     renderItem={(item) => renderItem(item)}
                     contentContainerStyle={{ flexGrow: 1, paddingTop: 45, justifyContent: favoriteList.length > 0 ? 'flex-start' : 'center' }}
+
                     ListEmptyComponent={() => {
                         if (isLoading) {
                             return <ActivityIndicator size={'large'} color={colors.White} />

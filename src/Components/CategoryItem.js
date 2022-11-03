@@ -25,12 +25,27 @@ import Images from '../Assets/Images/Index'
 const CategoryItem = (props) => {
     const { Item, navigation } = props
     const [isLoading, setIsLoading] = useState(false)
+    const [loaderOpacity, setLoaderOpacity] = useState(0)
+
+
+    const onLoadStart = () => {
+        setLoaderOpacity(1)
+    }
+
+    const onLoad = () => {
+        setLoaderOpacity(0)
+    }
+
+    const onBuffer = ({ isBuffering }) => {
+        console.log({ isBuffering });
+        setLoaderOpacity(isBuffering ? 1 : 0)
+    }
 
 
     return (
         <TouchableOpacity
             activeOpacity={0.8}
-            onPress={() => navigation.navigate('SubCategories', { categoryId: Item?.id })}
+            onPress={() => navigation.navigate('Solutions', { categoryId: Item?.id })}
             style={styles.mainContainer}>
 
             <View style={{
@@ -43,35 +58,35 @@ const CategoryItem = (props) => {
 
                 {
                     (Item?.category_media[0]?.image && Item?.category_media[0]?.type === 'video') ?
-                        <View style={{ height: 250, width: '100%', borderTopLeftRadius: 15, borderTopRightRadius: 15, overflow: 'hidden' }}>
-                            <Video source={{ uri: Item?.category_media[0]?.image }}
-                                // onBuffer={this.onBuffer}                // Callback when remote video is buffering
-                                // onError={this.videoError}               // Callback when video cannot be loaded
-                                style={{ height: 250, width: '100%', }}
-                                resizeMode={'contain'}
-                                onBuffer={() => {
-                                    setIsLoading(true)
-                                }}
-                                onLoadStart={() => {
-                                    setIsLoading(true)
-                                }}
-                                onLoadEnd={() => {
-                                    setIsLoading(false)
-                                }}
-                                onReadyForDisplay={()=>{
-                                    setIsLoading(false)
-                                }}
-                            // onLoad={() => {
+                        < >
+                            <Video
+                                source={{ uri: Item?.category_media[0]?.image }}
+                                onBuffer={onBuffer}
+                                onLoadStart={onLoadStart}
+                                onLoad={onLoad}
+                                repeat
+                                style={{ height: '100%', width: '100%', }}
+                                resizeMode={'cover'}
+
+
+                            // onLoadStart={() => {
+                            //     setIsLoading(true)
+                            // }}
+                            // onLoadEnd={() => {
                             //     setIsLoading(false)
                             // }}
+                            // onReadyForDisplay={() => {
+                            //     setIsLoading(false)
+                            // }}
+
                             />
-                            {
-                                isLoading &&
-                                <ImageLoader
-                                    isLoading={isLoading}
-                                />
-                            }
-                        </View>
+
+                            <ImageLoader
+                                isLoading={isLoading}
+                                opacity={loaderOpacity}
+                            />
+
+                        </>
                         :
                         (
                             (Item?.category_media[0]?.image && (Item?.category_media[0]?.type === 'image' || Item?.category_media[0]?.type === 'gif')) ?
@@ -80,27 +95,11 @@ const CategoryItem = (props) => {
                                         isLoading={isLoading}
                                     />
                                     <Image
-                                        // loadingIndicatorSource={() => {
-                                        //     return (
-                                        //         <ActivityIndicator
-                                        //             size='small'
-                                        //             color={colors.Secondary}
-                                        //             style={{display: (isLoading) ? 'flex' : 'none'}}
-                                        //             // animating={isLoading}
-                                        //         />
-                                        //     )
-                                        // }}
-                                        onLoadStart={() => {
-                                            setIsLoading(true)
-                                        }}
-                                        // onLoad={() => {
-                                        //     setIsLoading(false)
-                                        // }}
+                                        onBuffer
+                                        onLoadStart={onLoadStart}
+                                        onLoad={onLoad}
                                         onError={(error) => console.log(error)}
-                                        onLoadEnd={() => {
-                                            setIsLoading(false)
-
-                                        }}
+                                      
                                         source={{ uri: Item?.category_media[0]?.image }} style={styles.categoryImg} />
 
                                 </>

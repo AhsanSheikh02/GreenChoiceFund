@@ -13,7 +13,7 @@ import Fonts from '../Assets/Fonts/Index'
 
 const ProfileSettingComponent = (props) => {
 
-    const { Title, containerStyle, Icon, IconStyle, onPress } = props
+    const { Title, containerStyle, Icon, IconStyle, TitleStyle, onPress } = props
 
     return (
         <TouchableOpacity
@@ -21,7 +21,7 @@ const ProfileSettingComponent = (props) => {
             activeOpacity={0.8}
             style={[styles.mainContainer, containerStyle]}>
             <Image source={Icon} style={[styles.leftIcon, IconStyle]} />
-            <Text style={styles.title}>{Title}</Text>
+            <Text style={[styles.title, TitleStyle, { opacity: TitleStyle ? 1 : 0.6 }]}>{Title}</Text>
         </TouchableOpacity>
     )
 }
@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
         fontFamily: Fonts.Regular,
         fontWeight: '500',
         color: colors.White,
-        opacity: 0.6,
         marginLeft: 24
     },
     leftIcon: {

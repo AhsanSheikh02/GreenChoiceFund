@@ -27,18 +27,21 @@ import colors from '../../../Assets/Colors/Index';
 import SocialButton from '../../../Components/SocialBtn';
 import Loader from '../../../Components/Loader';
 import { RegisterUser, SocialLogin, UpdateProfile } from '../../../APIConfig/Config'
-import { Guest, userToken } from '../../../Redux/Actions/Auth';
+import { Guest, userToken, UserType } from '../../../Redux/Actions/Auth';
 import CountryPickerModal from '../../../Components/CountryPicker';
 import Fonts from '../../../Assets/Fonts/Index';
 
 const PersonalDetails = ({ navigation, route }) => {
 
-    const {userData} = route?.params || ''
+    const { userData, allowEmail } = route?.params || ''
+    const { loggedInUserDetails } = useSelector(state => state.Auth)
 
     const EMAIL_REG = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
     const { deviceToken, deviceId } = useSelector(state => state.DeviceInfo)
     const { userTypes } = useSelector(state => state.Splash)
+    const { authToken } = useSelector(state => state.Auth)
     const dispatch = useDispatch()
+
 
     const TostMsg = (msg) => {
         Toast.show(msg, {
@@ -48,9 +51,9 @@ const PersonalDetails = ({ navigation, route }) => {
         })
     }
 
-    const [name, setName] = useState(userData?.data?.name)
-    const [email, setEmail] = useState(userData?.data?.email)
-    const [code, setCode] = useState('92')
+    const [name, setName] = useState(userData?.name || loggedInUserDetails?.name)
+    const [email, setEmail] = useState(userData?.email || loggedInUserDetails?.email)
+    const [code, setCode] = useState('1')
     const [number, setNumber] = useState('')
     const [isCountryModal, setIsCountryModal] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
@@ -71,13 +74,34 @@ const PersonalDetails = ({ navigation, route }) => {
 
     const callAPIforUpdateProfile = () => {
         if (name === '') {
-            TostMsg('Name required')
+            TostMsg('Name is required')
+        } else if (number === '') {
+            TostMsg(`Phone No is required`)
+        } else if (userTypeId === '') {
+            TostMsg(`User type is required`)
         } else {
             Toast.showLoading("Please wait..")
-            UpdateProfile(name, code, number,userTypeId)
+            UpdateProfile(name, code, number, userTypeId)
                 .then((res) => {
                     Toast.hide()
-                    TostMsg('Token is invalid')
+                    if (res?.code === 200) {
+                        dispatch(Guest(false))
+                        dispatch(UserType(res?.data?.user_type_id))
+                        TostMsg('Account registered successfully')
+                        if (res?.data?.user_type_id === '1') {
+                            setTimeout(() => {
+                                navigation.reset({
+                                    index: 0,
+                                    routes: [{ name: 'HomeStack' }],
+                                })
+                            }, 250);
+                        }
+                        else {
+                            setTimeout(() => {
+                                navigation.replace('OnBoarding')
+                            }, 250);
+                        }
+                    }
                 }).catch((err) => {
                     Toast.hide()
                     // TostMsg(err)
@@ -94,7 +118,7 @@ const PersonalDetails = ({ navigation, route }) => {
         <SafeAreaView style={styles.mainContainer}>
 
             <KeyboardAwareScrollView
-                keyboardShouldPersistTaps='always'
+                keyboardShouldPersistTaps='handled'
                 contentContainerStyle={styles.scrollView}
                 showsVerticalScrollIndicator={false} >
                 <Image
@@ -109,13 +133,13 @@ const PersonalDetails = ({ navigation, route }) => {
                     returnKeyType={'next'}
                     fieldRef={nameRef}
                     onSubmitEditing={() => {
-                        emailRef?.current?.focus()
+                        numberRef?.current?.focus()
                     }}
                     placeholder='Name'
                     customStyle={{
                         marginTop: 37
                     }}
-                    // editable={false}
+                // editable={false}
                 />
 
                 <InputField
@@ -131,12 +155,12 @@ const PersonalDetails = ({ navigation, route }) => {
                     customStyle={{
                         marginTop: 12
                     }}
-                    // editable={false}
+                    editable={false}
                 />
 
                 <View style={styles.phoneNumberContainer}>
                     <View
-                        style={styles.codeContainer}>
+                        style={[styles.codeContainer, { width: (code.length > 2 && code.length < 4) ? '23%' : code.length > 3 ? '26%' : '20%', }]}>
                         <CountryPickerModal
                             callingCode={(code) => {
                                 setCode(code)
@@ -144,7 +168,7 @@ const PersonalDetails = ({ navigation, route }) => {
                             visible={isCountryModal} />
                         <Text style={styles.countryCode}>{`+${code}`}</Text>
                     </View>
-                    <View style={styles.numberContainer}>
+                    <View style={[styles.numberContainer,{width: (code.length>2 && code.length<4)? '77%':  code.length>3 ? '74%':'80%',}]}>
                         <TextInput
                             style={{ fontSize: 14, fontFamily: Fonts.Light, color: colors.White }}
                             ref={numberRef}
@@ -152,11 +176,10 @@ const PersonalDetails = ({ navigation, route }) => {
                             onChangeText={(val) => setNumber(val)}
                             value={number}
                             keyboardType={'number-pad'}
-                            maxLength={10}
                             placeholderTextColor={'rgba(255,255,255,0.2)'}
                             returnKeyType={'next'}
                             onSubmitEditing={() => {
-                                passwordRef?.current?.focus()
+                                Keyboard.dismiss()
                             }}
 
                         />
@@ -175,6 +198,7 @@ const PersonalDetails = ({ navigation, route }) => {
                     dropDownMaxHeight={50}
                     onChangeValue={item => {
                         setUserTypeId(item)
+                        // console.log(item);
                     }}
                     // scrollViewProps={{
                     //     nestedScrollEnabled: true,
@@ -223,13 +247,13 @@ const PersonalDetails = ({ navigation, route }) => {
                     }}
                 />
 
-                
+
 
                 <AppButton
                     label={"SAVE"}
                     style={styles.btnStyle}
                     labelStyle={styles.label}
-                onPress={() => callAPIforUpdateProfile()}
+                    onPress={() => callAPIforUpdateProfile()}
                 />
             </KeyboardAwareScrollView>
             <Loader visible={isLoading} />

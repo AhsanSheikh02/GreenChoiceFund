@@ -28,7 +28,7 @@ import colors from '../../../Assets/Colors/Index';
 import SocialButton from '../../../Components/SocialBtn';
 import Loader from '../../../Components/Loader';
 import { RegisterUser, SocialLogin } from '../../../APIConfig/Config'
-import { Guest, userToken, UserType } from '../../../Redux/Actions/Auth';
+import { Guest, userDetail, userToken, UserType } from '../../../Redux/Actions/Auth';
 import CountryPickerModal from '../../../Components/CountryPicker';
 import Fonts from '../../../Assets/Fonts/Index';
 
@@ -50,7 +50,7 @@ const SignUp = ({ navigation, route }) => {
 
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
-    const [code, setCode] = useState('92')
+    const [code, setCode] = useState('1')
     const [number, setNumber] = useState('')
     const [isCountryModal, setIsCountryModal] = useState(false)
     const [password, setPassword] = useState('')
@@ -76,12 +76,12 @@ const SignUp = ({ navigation, route }) => {
     }
 
     const googleSignUp = async () => {
-        // Toast.showLoading("Please wait..")
+        Toast.showLoading("Please wait..")
         try {
             const { idToken } = await GoogleSignin.signIn();
             const googleCredential = auth.GoogleAuthProvider.credential(idToken);
             const credentials = await auth().signInWithCredential(googleCredential);
-            console.log(googleCredential?.token);
+            // console.log(googleCredential?.token);
             // console.log({ idToken });
             // console.log('main credential object...', credentials);
             // console.log('additional user-info...', credentials?.additionalUserInfo?.profile);
@@ -95,11 +95,12 @@ const SignUp = ({ navigation, route }) => {
                 family_name: credentials?.additionalUserInfo?.profile?.family_name,
                 given_name: credentials?.additionalUserInfo?.profile?.given_name,
                 phoneNumber: credentials?.user?.phoneNumber,
-                provider_data_uid: null,
+                provider_data_uid: credentials?.user?.providerData[0]?.providerId,
                 uid: credentials?.user?.uid
 
             }
-            callAPIforSocialLogin(googleCredential?.token, user_info)
+            // console.log({user_info});
+            callAPIforSocialLogin(googleCredential?.token, 'google', user_info)
 
         } catch (error) {
             console.log("googleSignIn-error", error);
@@ -107,6 +108,7 @@ const SignUp = ({ navigation, route }) => {
     };
 
     async function onAppleButtonPress() {
+        Toast.showLoading("Please wait..")
         // Start the sign-in request
         const appleAuthRequestResponse = await appleAuth.performRequest({
             requestedOperation: appleAuth.Operation.LOGIN,
@@ -121,9 +123,9 @@ const SignUp = ({ navigation, route }) => {
         // Create a Firebase credential from the response
         const { identityToken, nonce } = appleAuthRequestResponse;
         const appleCredential = auth.AppleAuthProvider.credential(identityToken, nonce);
-        console.log(appleAuthRequestResponse);
-        console.log(appleCredential);
-        callAPIforSocialLogin(appleAuthRequestResponse?.identityToken)
+        // console.log(appleAuthRequestResponse);
+        // console.log(appleCredential);
+        callAPIforSocialLogin(appleAuthRequestResponse?.identityToken, 'apple')
         return auth().signInWithCredential(appleCredential);
 
     }
@@ -153,15 +155,21 @@ const SignUp = ({ navigation, route }) => {
     const callAPIforRegister = () => {
         let platformId = Platform.OS === 'ios' ? 2 : 1
         if (name === '') {
-            TostMsg('Name required')
+            TostMsg('Name is required')
         } else if (email === '') {
-            TostMsg('Email required')
+            TostMsg('Email is required')
         } else if (EMAIL_REG.test(email) == false) {
-            TostMsg('Invalid Email')
+            TostMsg('Email is invalid')
+        } else if (number === '') {
+            TostMsg(`Phone No is required`)
+        } else if (userTypeId === '') {
+            TostMsg(`User type is required`)
         } else if (password === '') {
-            TostMsg('Password required')
+            TostMsg('Password is required')
+        } else if (password.length < 8) {
+            TostMsg('Password should be min 8 characters')
         } else if (confirmPass === '') {
-            TostMsg('Confirm Password required')
+            TostMsg('Confirm password is required')
         } else if (password != confirmPass) {
             TostMsg(`Password doesn't match`)
         } else {
@@ -201,21 +209,26 @@ const SignUp = ({ navigation, route }) => {
 
     }
 
-    const callAPIforSocialLogin = (googleToken, userObject) => {
+    const callAPIforSocialLogin = (token, provider, userObject) => {
         let platformId = Platform.OS === 'ios' ? 2 : 1
-        // console.log(Object);
-        // console.log(googleToken);
-        // return false;
 
-        SocialLogin(googleToken, 'google', deviceToken, deviceId, platformId, userObject)
+        SocialLogin(token, provider, deviceToken, deviceId, platformId, userObject)
             .then((res) => {
-                console.log("callAPIforSocialLogin-res...", res);
+                // console.log("callAPIforSocialLogin-res...", res);
+                Toast.hide()
                 if (res.code === 200) {
+                    dispatch(userToken(res?.data?.token))
+                    dispatch(userDetail(res?.data?.user))
+                    dispatch(UserType(null))
+                    AsyncStorage.setItem("authToken", res?.data?.token)
                     setTimeout(() => {
-                        navigation.navigate('PersonalDetails', { userData: res })
-                    }, 350);
+                        navigation.navigate('PersonalDetails',
+                            {
+                                userData: res?.data?.user,
+                                allowEmail: provider === 'apple' ? true : false
+                            })
+                    }, 500);
                 }
-                // Toast.hide()
 
                 // TostMsg('Account registered')
                 // dispatch(userToken(res?.data?.token))
@@ -237,9 +250,10 @@ const SignUp = ({ navigation, route }) => {
         <SafeAreaView style={styles.mainContainer}>
 
             <KeyboardAwareScrollView
-                keyboardShouldPersistTaps='always'
+                keyboardShouldPersistTaps='handled'
                 contentContainerStyle={styles.scrollView}
-                showsVerticalScrollIndicator={false} >
+                showsVerticalScrollIndicator={false}
+            >
                 <Image
                     source={Images.Logo}
                     style={styles.Logo}
@@ -315,7 +329,7 @@ const SignUp = ({ navigation, route }) => {
 
                 <View style={styles.phoneNumberContainer}>
                     <View
-                        style={styles.codeContainer}>
+                        style={[styles.codeContainer, { width: (code.length > 2 && code.length < 4) ? '23%' : code.length > 3 ? '26%' : '20%', }]}>
                         <CountryPickerModal
                             callingCode={(code) => {
                                 console.log(code);
@@ -324,7 +338,7 @@ const SignUp = ({ navigation, route }) => {
                             visible={isCountryModal} />
                         <Text style={styles.countryCode}>{`+${code}`}</Text>
                     </View>
-                    <View style={styles.numberContainer}>
+                    <View style={[styles.numberContainer, { width: (code.length > 2 && code.length < 4) ? '77%' : code.length > 3 ? '74%' : '80%', }]}>
                         <TextInput
                             style={{ fontSize: 14, fontFamily: Fonts.Regular, color: colors.White }}
                             ref={numberRef}
@@ -332,7 +346,6 @@ const SignUp = ({ navigation, route }) => {
                             onChangeText={(val) => setNumber(val)}
                             value={number}
                             keyboardType={'number-pad'}
-                            maxLength={10}
                             placeholderTextColor={'rgba(255,255,255,0.2)'}
                             returnKeyType={'next'}
                             onSubmitEditing={() => {

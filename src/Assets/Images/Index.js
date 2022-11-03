@@ -33,6 +33,11 @@ export const Images = {
     Money: require('./money.png'),
     Fallback: require('./imageFallback.png'),
     GoogleIcon: require('./googleIcon.png'),
+    AddToCart: require('./addCart.png'),
+    AddedToCart: require('./addedToCart.png'),
+    Inquiry: require('./inquiry.png'),
+
+    
     
     
 
