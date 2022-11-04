@@ -4,15 +4,14 @@ import colors from "../Assets/Colors/Index";
 
 
 const ImageLoader = (props) => {
-    const { isLoading, opacity } = props
+    const { isLoading } = props
 
-    console.log({opacity});
 
     return (
         <ActivityIndicator
             size='small'
             color={colors.Secondary}
-            animating
+            animating={isLoading}
             style={[{
                 position: 'absolute',
                 left: 0,
@@ -20,7 +19,6 @@ const ImageLoader = (props) => {
                 top: 0,
                 bottom: 0,
                 zIndex: 999,
-                opacity:opacity
             }]}
         />
     )

@@ -65,7 +65,7 @@ const CategoryItem = (props) => {
                                 onLoadStart={onLoadStart}
                                 onLoad={onLoad}
                                 repeat
-                                style={{ height: '100%', width: '100%', }}
+                                style={{ height: '100%', width: '100%',borderTopRightRadius:15,borderTopLeftRadius:15 }}
                                 resizeMode={'cover'}
 
 
@@ -81,10 +81,10 @@ const CategoryItem = (props) => {
 
                             />
 
-                            <ImageLoader
+                            {/* <ImageLoader
                                 isLoading={isLoading}
                                 opacity={loaderOpacity}
-                            />
+                            /> */}
 
                         </>
                         :

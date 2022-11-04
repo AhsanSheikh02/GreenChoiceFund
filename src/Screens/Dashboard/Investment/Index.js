@@ -172,7 +172,7 @@ const Investment = ({ navigation, route }) => {
                             code: code,
                             number: number,
                             address: address,
-                            dob: moment(dob).format('DD-MM-YYYY'),
+                            dob: moment(dob).format('YYYY-MM-DD'),
                             amount: amount,
                         }
                     })
@@ -182,21 +182,6 @@ const Investment = ({ navigation, route }) => {
                 TostMsg(err)
                 console.log("callAPIforLinkToken-err", err);
             })
-
-    }
-
-
-    const onChangeHandler = (value) => {
-        let dollar = '$'
-        if (value != '') {
-            value.slice(1)
-            clearTimeout(timeout.current);
-            setAmount(value);
-            timeout.current = setTimeout(() => {
-                console.log('hehehehe', dollar, amount);
-                setAmount(dollar + amount)
-            }, 350);
-        }
 
     }
 
@@ -243,7 +228,7 @@ const Investment = ({ navigation, route }) => {
                                     visible={isCountryModal} />
                                 <Text style={styles.countryCode}>{`+${code}`}</Text>
                             </View>
-                            <View style={[styles.numberContainer,{width: (code.length>2 && code.length<4)? '77%':  code.length>3 ? '74%':'80%',}]}>
+                            <View style={[styles.numberContainer, { width: (code.length > 2 && code.length < 4) ? '77%' : code.length > 3 ? '74%' : '80%', }]}>
                                 <TextInput
                                     style={{ fontSize: 14, fontFamily: Fonts.Regular, color: colors.White }}
                                     ref={numberRef}
@@ -284,7 +269,7 @@ const Investment = ({ navigation, route }) => {
                                     style={{ fontSize: 14, fontFamily: Fonts.Light, color: colors.White }}
                                     placeholder='10/11/1998'
                                     onChangeText={(val) => setDob(val)}
-                                    value={moment(dob).format('MM/DD/YYYY')}
+                                    value={moment(dob).format('YYYY/MM/DD')}
                                     placeholderTextColor={'rgba(255,255,255,0.2)'}
                                     editable={false}
                                 />

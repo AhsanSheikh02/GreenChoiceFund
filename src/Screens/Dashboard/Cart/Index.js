@@ -22,6 +22,7 @@ import { userDetail } from '../../../Redux/Actions/Auth'
 import CartItem from '../../../Components/CartItem'
 import AppButton from '../../../Components/AppBtn'
 import { useIsFocused } from '@react-navigation/native'
+import { NoOfCart } from '../../../Redux/Actions/Cart'
 
 
 const Cart = ({ navigation }) => {
@@ -45,6 +46,7 @@ const Cart = ({ navigation }) => {
             setIsLoading(false)
             setIsRefresh(false);
             setCartList(res?.data?.list)
+            dispatch(NoOfCart(res?.data?.count))
         }).catch((err) => {
             setIsLoading(false)
             setIsRefresh(false);
@@ -52,7 +54,7 @@ const Cart = ({ navigation }) => {
         })
 
     }
-
+   
     const onRefresh = () => {
         setIsRefresh(true);
         callAPIforCartList();
