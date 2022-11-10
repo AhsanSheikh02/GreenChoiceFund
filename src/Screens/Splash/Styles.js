@@ -17,11 +17,11 @@ const styles = StyleSheet.create({
         width: 101,
         height: 159,
         resizeMode: 'contain',
-        marginTop: '25%'
+        marginTop: height/8,
     },
     secondaryLogo: {
         width: '100%',
-        height: height/1.8,
+        height: height/1.85,
         position: 'absolute',
         bottom: '-12%',
         // resizeMode:'contain'
