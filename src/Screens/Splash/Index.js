@@ -109,7 +109,7 @@ const Splash = ({ navigation }) => {
                     index: 0,
                     routes: [{ name: 'SignIn' }],
                 })
-            }, 350000000);
+            }, 3500);
         }
 
     }, [])
