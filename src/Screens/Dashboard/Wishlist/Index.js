@@ -92,7 +92,7 @@ const Wishlist = ({ navigation }) => {
                             {
                                 infographic ?
                                     <>
-                                        <ImageLoader isLoading={isLoading} />
+                                        {/* <ImageLoader isLoading={isLoading} /> */}
                                         <Image
                                             onLoadStart={() => {
                                                 setImageLoading(true)
@@ -105,7 +105,7 @@ const Wishlist = ({ navigation }) => {
                                                 setImageLoading(false)
 
                                             }}
-                                            source={{ uri: infographic }} style={styles.solutionImg} />
+                                            source={{ uri: 'http://green.voidsoftech.com/storage/infographic\\infographic.png' }} style={styles.solutionImg} />
 
                                     </>
                                     :

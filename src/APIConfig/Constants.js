@@ -27,6 +27,7 @@ export const CREATE_LINK_TOKEN = `${API_URL}plaid/create_link_token`;
 export const SET_ACCESS_TOKEN = `${API_URL}plaid/set_access_token`;
 export const USER_ACCOUNTS = `${API_URL}plaid/accounts/get`;
 export const INVEST = `${API_URL}investment/save`;
+export const STRIPE_INVEST = `${API_URL}investment/save/stripe`;
 export const USER_INVESTMENTS = `${API_URL}investment/user`;
 
 

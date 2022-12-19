@@ -28,7 +28,8 @@ import {
     USER_ACCOUNTS,
     USER_INVESTMENTS,
     DELETE_ACCOUNT,
-    INVEST
+    INVEST,
+    STRIPE_INVEST
 } from './Constants'
 
 
@@ -408,6 +409,28 @@ export const Investment = async (name, email, country_code, contact_no, address,
     }
     try {
         let res = await fetch.post(INVEST, data, requestName)
+        return res
+    } catch (error) {
+        throw error;
+    }
+};
+
+// Handle Stripe
+export const StripeInvestment = async (name, email, country_code, contact_no, address, dob, investment_amount, account_id, access_token) => {
+    let requestName = 'StripeInvestment'
+    let data = {
+        name,
+        email,
+        country_code,
+        contact_no,
+        address,
+        dob,
+        investment_amount,
+        account_id,
+        access_token
+    }
+    try {
+        let res = await fetch.post(STRIPE_INVEST, data, requestName)
         return res
     } catch (error) {
         throw error;

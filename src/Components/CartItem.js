@@ -63,25 +63,23 @@ const CartItem = (props) => {
             activeOpacity={0.8}
             // onPress={() => navigation?.navigate('SolutionDetails', { Details: Item })}
             style={styles.mainContainer}>
-            <View style={{ flex: 0.25, }}>
+            <View style={{ flex: 0.25 }}>
                 <Image source={{ uri: Item?.solution_media[0]?.image }} style={styles.categoryImg} />
             </View>
-            <View style={{ flex: 0.75, }}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Text style={styles.title}>{Item?.name}</Text>
-                    <TouchableOpacity
-                        activeOpacity={0.8}
-                        onPress={() => {
-                            callAPIforRemoveCart()
-                            deleteItem(Item?.id)
-                        }}
-                    >
-                        <Image source={Images.Delete} style={styles.deleteIcon} />
-                    </TouchableOpacity>
-                </View>
-                <View>
-                    <Text style={styles.desc}>{Item?.description}</Text>
-                </View>
+            <View style={{ flex: 0.65, paddingHorizontal:5 }}>
+                <Text style={styles.title}>{Item?.name}</Text>
+                <Text style={styles.desc}>{Item?.description}</Text>
+            </View>
+            <View style={{ flex: 0.1, alignItems:'flex-end' }}>
+                <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() => {
+                        callAPIforRemoveCart()
+                        deleteItem(Item?.id)
+                    }}
+                >
+                    <Image source={Images.Delete} style={styles.deleteIcon} />
+                </TouchableOpacity>
             </View>
         </TouchableOpacity >
     )
@@ -95,8 +93,8 @@ const styles = StyleSheet.create({
         width: '100%',
         flexDirection: 'row',
         borderRadius: 15,
-        paddingHorizontal: 12,
-        paddingVertical: 12,
+        paddingHorizontal: 10,
+        paddingVertical: 10,
         backgroundColor: colors.SecondaryTwo,
     },
     categoryImg: {

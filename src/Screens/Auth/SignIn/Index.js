@@ -51,7 +51,6 @@ const SignIn = ({ navigation, route }) => {
 
 
     const googleSignUp = async () => {
-        Toast.showLoading("Please wait..")
         try {
             const { idToken } = await GoogleSignin.signIn();
             const googleCredential = auth.GoogleAuthProvider.credential(idToken);
@@ -155,6 +154,7 @@ const SignIn = ({ navigation, route }) => {
     }
 
     const callAPIforSocialLogin = (token, provider, userObject) => {
+        Toast.showLoading("Please wait..")
         let platformId = Platform.OS === 'ios' ? 2 : 1
 
         SocialLogin(token, provider, deviceToken, deviceId, platformId, userObject)

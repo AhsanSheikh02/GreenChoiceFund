@@ -68,7 +68,14 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         color: colors.White
     },
-
+    solutionImg: {
+        height: 76,
+        width: 76,
+        borderRadius: 15,
+        backgroundColor: colors.Placeholder,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
 })
 
 

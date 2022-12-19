@@ -11,6 +11,8 @@ import {
     TextInput,
     Keyboard,
     Pressable,
+    Linking,
+    AppState,
 
 } from 'react-native'
 
@@ -32,7 +34,9 @@ import Images from '../../../Assets/Images/Index'
 import Fonts from '../../../Assets/Fonts/Index'
 import AlertModal from '../../../Components/AlertModal'
 import FullImage from '../../../Components/FullImage'
-import { CreateLinkToken, SetAccessToken } from '../../../APIConfig/Config';
+import { CreateLinkToken, SetAccessToken, StripeInvestment } from '../../../APIConfig/Config';
+import { IsBrowser } from '../../../Redux/Actions/SplashMetaData';
+import { useIsFocused } from '@react-navigation/native';
 
 
 const width = Dimensions.get('window').width
@@ -65,7 +69,9 @@ const Investment = ({ navigation, route }) => {
     const [isVisible, setIsVisible] = useState(false)
     const [fullImageVisible, setFullImageVisible] = useState(false)
     const [selectedIndex, setSelectedIndex] = useState('')
+    const [appStateVisibility, setAppStateVisibility] = useState(false)
     const { loggedInUserDetails } = useSelector(state => state.Auth)
+    const appState = useRef(AppState?.currentState)
 
     const listRef = useRef(null)
     const nameRef = useRef()
@@ -73,6 +79,8 @@ const Investment = ({ navigation, route }) => {
     const addressRef = useRef()
     const amountRef = useRef()
     const timeout = useRef(null);
+    const dispatch = useDispatch()
+    const isFocused = useIsFocused()
 
     useEffect(() => {
         if (isInternet) {
@@ -81,6 +89,28 @@ const Investment = ({ navigation, route }) => {
             }, 1500);
         }
     }, [isInternet])
+
+
+    // useEffect(() => {
+    //     const subscription = AppState.addEventListener("change", nextAppState => {
+    //         if (
+    //             appState.current.match(/inactive|background/) && nextAppState === "active" && isBrowserOpen) {
+    //             console.log("App has come to the foreground!");
+    //         }
+
+    //         appState.current = nextAppState;
+    //         setAppStateVisibility(appState.current)
+    //         console.log("AppState", appState?.current);
+    //     });
+
+    //     return () => {
+    //         subscription.remove();
+    //     };
+    // }, []);
+
+    // useEffect(() => {
+
+    // }, [appStateVisibility])
 
     const getAge = (dateString) => {
         var today = new Date();
@@ -122,22 +152,25 @@ const Investment = ({ navigation, route }) => {
             TostMsg('Phone No is required')
         } else if (amount === '') {
             TostMsg('Amount is required')
+        } else if (amount < 1000) {
+            console.log(amount);
+            TostMsg('Amount can not be less than $1000')
         } else if (amount > 25000) {
             console.log(amount);
-            TostMsg('Amount can not be greater than 25000')
+            TostMsg('Amount can not be greater than $25000')
         } else if (address === '') {
             TostMsg('Address is required')
         } else if (getAge(dob) <= 15) {
             console.log(age);
             TostMsg('You must be over 18 for this program')
         } else {
-            setIsAllInfo(true)
             Toast.showLoading("Please wait..")
             // console.log(name, email, password, confirmPass, deviceToken, deviceId, platformId);
             // return false
             CreateLinkToken()
                 .then((res) => {
                     Toast.hide()
+                    setIsAllInfo(true)
                     setLinkToken(res?.data?.link_token)
                     // setTimeout(() => {
                     //     if (res?.data?.user?.user_type_id === '1') {
@@ -181,6 +214,34 @@ const Investment = ({ navigation, route }) => {
                 Toast.hide()
                 TostMsg(err)
                 console.log("callAPIforLinkToken-err", err);
+            })
+
+    }
+
+    const callAPIforStripe = () => {
+        Toast.showLoading("Please wait..")
+        let dateOfBirth = moment(dob).format('YYYY-MM-DD')
+        StripeInvestment(name, loggedInUserDetails?.email, code, number, address, dateOfBirth, amount, null, null)
+            .then((res) => {
+                Toast.hide()
+                dispatch(IsBrowser(true))
+                setTimeout(() => {
+                    navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'HomeStack' }],
+                    })
+                }, 1500);
+            }).catch((err) => {
+                Toast.hide()
+                dispatch(IsBrowser(true))
+                TostMsg(err)
+                setTimeout(() => {
+                    navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'HomeStack' }],
+                    })
+                }, 1500);
+                console.log("callAPIforStripe-err", err);
             })
 
     }
@@ -303,21 +364,33 @@ const Investment = ({ navigation, route }) => {
 
                         {
                             isAllInfo ?
-                                <PlaidLink
-                                    tokenConfig={{
-                                        token: linkToken,
-                                    }}
-                                    onSuccess={(success: LinkSuccess) => {
-                                        console.log("Plaid success....", JSON.parse(success.metadata.metadataJson))
-                                        callAPIforAccessToken(JSON.parse(success?.metadata?.metadataJson))
-                                    }}
-                                    onExit={(exit: LinkExit) => { console.log({ exit }) }}
-                                >
-                                    <View
-                                        style={[styles.btnStyle]} >
-                                        <Text style={[styles.label]}>{'Connect Plaid'}</Text>
-                                    </View>
-                                </PlaidLink>
+                                <>
+                                    <PlaidLink
+                                        tokenConfig={{
+                                            token: linkToken,
+                                        }}
+                                        onSuccess={(success: LinkSuccess) => {
+                                            console.log("Plaid success....", JSON.parse(success.metadata.metadataJson))
+                                            callAPIforAccessToken(JSON.parse(success?.metadata?.metadataJson))
+                                        }}
+                                        onExit={(exit: LinkExit) => { console.log({ exit }) }}
+                                    >
+                                        <View
+                                            style={[styles.btnStyle]} >
+                                            <Text style={[styles.label]}>{'Connect Plaid'}</Text>
+                                        </View>
+                                    </PlaidLink>
+
+                                    <AppButton
+                                        label={"Connect Stripe"}
+                                        style={[styles.btnStyle, { marginTop: 20 }]}
+                                        labelStyle={[styles.label]}
+                                        onPress={() => {
+                                            callAPIforStripe()
+
+                                        }}
+                                    />
+                                </>
                                 :
                                 <AppButton
                                     label={"INVEST NOW"}

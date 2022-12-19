@@ -7,7 +7,8 @@ import {
     TouchableOpacity,
     FlatList,
     ActivityIndicator,
-    SafeAreaView
+    SafeAreaView,
+    Linking
 
 } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
@@ -20,17 +21,21 @@ import { CartCount, CategoryList, UserDetail } from '../../../APIConfig/Config'
 import colors from '../../../Assets/Colors/Index'
 import { onLogout, userDetail } from '../../../Redux/Actions/Auth'
 import { NoOfCart } from '../../../Redux/Actions/Cart'
+import { useIsFocused } from '@react-navigation/native'
+import { IsBrowser } from '../../../Redux/Actions/SplashMetaData'
 
 
 const Home = ({ navigation }) => {
 
     const { guest } = useSelector(state => state.Auth)
     const { isInternet } = useSelector(state => state.DeviceInfo)
+    const { stripeUrl, isBrowserOpen } = useSelector(state => state.Splash)
 
     const [catList, setCatList] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [isRefresh, setIsRefresh] = useState(false)
     const dispatch = useDispatch()
+    const isFocused = useIsFocused()
 
     const callAPIforCartCount = () => {
         CartCount()
@@ -75,6 +80,16 @@ const Home = ({ navigation }) => {
             />
         )
     }
+
+    useEffect(() => {
+        dispatch(IsBrowser(false))
+        if (isBrowserOpen) {
+           setTimeout(() => {
+            Linking.openURL(stripeUrl)
+           }, 1000);
+        }
+       
+    }, [isFocused])
 
     useEffect(() => {
         if (!guest) {

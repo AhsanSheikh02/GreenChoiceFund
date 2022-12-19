@@ -15,7 +15,7 @@ import Images from '../../Assets/Images/Index'
 import { Guest } from '../../Redux/Actions/Auth'
 import { SplashMetaData } from '../../APIConfig/Config'
 import { DeviceToken, DeviceId } from '../../Redux/Actions/DeviceInfo';
-import { ContactUsReasons, Infographic, InfoUrls, UserTypes } from '../../Redux/Actions/SplashMetaData'
+import { ContactUsReasons, Infographic, InfoUrls, StripeURL, TermsURL, UserTypes } from '../../Redux/Actions/SplashMetaData'
 
 const Splash = ({ navigation }) => {
 
@@ -41,6 +41,8 @@ const Splash = ({ navigation }) => {
             dispatch(InfoUrls(res.data.infoUrl))
             dispatch(ContactUsReasons(reasonTempArray))
             dispatch(Infographic(res?.data?.infographic))
+            dispatch(StripeURL(res?.data?.stripe_payment_url))
+            dispatch(TermsURL(res?.data?.eula))
         }).catch((err) => {
             console.log("callAPIforMetaData-err", err);
         })

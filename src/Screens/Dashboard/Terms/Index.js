@@ -15,13 +15,14 @@ import Images from '../../../Assets/Images/Index'
 import Header from '../../../Components/Header'
 import colors from '../../../Assets/Colors/Index'
 import AppButton from '../../../Components/AppBtn';
+import { useSelector } from 'react-redux';
 
 {/* http://www.africau.edu/images/default/sample.pdf */ }
 {/* https://www.orimi.com/pdf-test.pdf */ }
-
+// 'https://www.orimi.com/pdf-test.pdf'
 const Terms = ({ navigation, route }) => {
 
-
+    const { termsUrl } = useSelector(state => state.Splash)
     return (
 
 
@@ -34,7 +35,7 @@ const Terms = ({ navigation, route }) => {
             />
             <Pdf
                 trustAllCerts={false}
-                source={{ uri: 'https://www.orimi.com/pdf-test.pdf' }}
+                source={{ uri: termsUrl }}
                 onLoadComplete={(numberOfPages, filePath) => {
                     console.log(`Number of pages: ${numberOfPages}`);
                 }}
