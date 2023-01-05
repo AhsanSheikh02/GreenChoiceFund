@@ -1,5 +1,6 @@
 //API Base URL
-export const API_URL = 'http://green.voidsoftech.com/api/v1/';
+// export const API_URL = 'http://green.voidsoftech.com/api/v1/';
+export const API_URL ='https://admin.greenchoicefund.com/api/v1/'
 
 //API End Points
 export const SPLASH_METADATA = `${API_URL}general/splash-metadata`;
